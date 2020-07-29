@@ -363,6 +363,14 @@ const userController = {
           })
       })
   },
+
+  getUserLikes: (req, res) => {
+
+  },
+
+  getUserReplies: (req, res) => {
+
+  },
 }
 
 module.exports = userController
