@@ -40,8 +40,10 @@
         <h5>{{user.name}}</h5>
         <small>{{user.email}}</small>
         <p>{{user.introduction}}</p>
-        <p>{{followingNum}}個跟隨中 {{followerNum}}位跟隨者</p>
+        <p>{{user.Followings.length}}個跟隨中 {{user.Followers.length}}位跟隨者</p>
       </div>
+
+      {{!-- Profile Nav --}}
       <div class="col">
         <ul class="nav nav-tabs bt-4">
           <li class="nav-item">
@@ -56,6 +58,7 @@
         </ul>
         <br />
         <br />
+        {{!-- render 喜愛的內容 --}}
         <div class="row">
           <ul class="list-group">
             {{#each tweets}}
@@ -84,7 +87,7 @@
                   </div>
                   <div class="col">
                     <small class="text-muted">
-                      <i class="far fa-heart"> {{this.likedUsers.length}}</i>
+                      <i class="far fa-heart" style="color: red;"> {{this.LikedUsers.length}}</i>
                     </small>
                   </div>
                 </div>

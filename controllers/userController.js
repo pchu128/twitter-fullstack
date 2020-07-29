@@ -115,7 +115,13 @@ const userController = {
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' },
-        { model: User, as: 'Followers' }
+        { model: User, as: 'Followers' },
+        {
+          model: Tweet,
+          where: { UserId: req.params.id },
+          include: [User, Reply,
+            { model: User, as: 'LikedUsers' }]
+        },
       ]
     })
       .then(user => {
@@ -134,29 +140,18 @@ const userController = {
           }))
           // 依追蹤者人數排序清單
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          //將user, users加入陣列回傳
-          let results = [user, users]
-          return results
-        }).then((results) => {
-          //取得回傳陣列值
-          let user = results[0]
-          let users = results[1]
-          return Tweet.findAll({
-            order: [['createdAt', 'DESC']],
-            where: { UserId: user.toJSON().id },
-            include: [User, Reply]
-          }).then((tweets) => {
-            tweets = tweets.map(user => ({ ...user.dataValues, }))
-            //console.log('tweets===>', tweets)
-            //取得user following/follower人數
-            let followingNum = user.toJSON().Followings.length
-            let followerNum = user.toJSON().Followers.length
-            //確認get user page是否為跟隨中使用者
-            function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
-            let loginUserisFollowed = users.find(findIsFollowed).isFollowed
+          //整理 user資料
+          user = user.toJSON()
+          //依推文時間排序user tweets
+          console.log('user====>', user)
+          let tweets = user.Tweets
+          tweets = tweets.sort((a, b) => b.createdAt - a.createdAt)
+          console.log('user====>', tweets)
+          //確認get user page是否為跟隨中使用者
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
 
-            return res.render('profile', { user: user.toJSON(), users: users, followingNum, followerNum, loginUserId, loginUserisFollowed, tweets: tweets })
-          })
+          return res.render('profile', { user, users, loginUserId, loginUserisFollowed, tweets: tweets })
         })
       })
   },
