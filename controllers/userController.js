@@ -143,10 +143,8 @@ const userController = {
           //整理 user資料
           user = user.toJSON()
           //依推文時間排序user tweets
-          console.log('user====>', user)
           let tweets = user.Tweets
           tweets = tweets.sort((a, b) => b.createdAt - a.createdAt)
-          console.log('user====>', tweets)
           //確認get user page是否為跟隨中使用者
           function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
           let loginUserisFollowed = users.find(findIsFollowed).isFollowed
@@ -161,7 +159,20 @@ const userController = {
     if (req.user.id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
     return User.findByPk(req.params.id)
       .then(user => {
-        return res.render('profileEdit', { user: user.toJSON() })
+        //抓取Topuser清單
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          return res.render('profileEdit', { user: user.toJSON(), users })
+        })
       })
   },
 
@@ -372,21 +383,21 @@ const userController = {
       ]
     })
       .then(user => {
+        //抓取Topuser清單
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
           ]
         }).then(users => {
-          // 整理 users 資料
           users = users.map(user => ({
             ...user.dataValues,
-            //計算追蹤者人數
             FollowerCount: user.Followers.length,
-            // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
+
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
-          // 依追蹤者人數排序清單
+          // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+
           //整理 user資料
           user = user.toJSON()
           // 依加入時間排序liked tweet
