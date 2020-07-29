@@ -7,6 +7,7 @@ const helpers = require('../_helpers')
 
 const tweetController = {
   getTweets: (req, res) => {
+    let loginUserId = req.user.id
     if (!helpers.getUser(req).role) {
       return Tweet.findAll({
         include: [
@@ -33,7 +34,7 @@ const tweetController = {
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          return res.render('tweets', { tweets: tweets, user: req.user, users: users })
+          return res.render('tweets', { tweets: tweets, user: req.user, users: users, loginUserId: loginUserId })
         })
       })
     }
@@ -59,6 +60,7 @@ const tweetController = {
     }
   },
   getTweet: (req, res) => {
+    let loginUserId = req.user.id
     return Tweet.findByPk(req.params.id, {
       include: [
         User,
@@ -82,7 +84,7 @@ const tweetController = {
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users })
+          return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users, loginUserId: loginUserId })
         })
       })
   },
