@@ -3,43 +3,27 @@ const Tweet = db.Tweet
 const User = db.User
 const Reply = db.Reply
 const Like = db.Like
+const helpers = require('../_helpers')
 
 const tweetController = {
   getTweets: (req, res) => {
-    return Tweet.findAll({
-      include: [
-        User,
-        Reply,
-        { model: User, as: 'LikedUsers' }
-      ],
-      order: [['createdAt', 'DESC']]
-    }).then(tweets => {
-      const data = tweets.map(t => ({
-        ...t.dataValues,
-        isLiked: req.user.LikedTweets.map(d => d.id).includes(t.id)
-      }))
-      //return res.render('tweets', { tweets: data, user: req.user })
-      return data
-    }).then(tweets => {
-      return User.findAll({
+    if (!helpers.getUser(req).role) {
+      return Tweet.findAll({
         include: [
-          { model: User, as: 'Followers' }
-        ]
-      }).then(users => {
-        // 整理 users 資料
-        users = users.map(user => ({
-          ...user.dataValues,
-          //計算追蹤者人數
-          FollowerCount: user.Followers.length,
-          // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
-          isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          User,
+          Reply,
+          { model: User, as: 'LikedUsers' }
+        ],
+        order: [['createdAt', 'DESC']]
+      }).then(tweets => {
+        const data = tweets.map(t => ({
+          ...t.dataValues,
+          isLiked: req.user.LikedTweets.map(d => d.id).includes(t.id)
         }))
-        // 依追蹤者人數排序清單
-        users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-        //將user, users加入陣列回傳
-        return res.render('tweets', { tweets: tweets, user: req.user, users: users })
+        return res.render('tweets', { tweets: data, user: req.user })
       })
-    })
+    }
+    return res.render('admin/tweets', { layout: 'blank', tweets: data, user: req.user })
   },
 
   postTweet: (req, res) => {
