@@ -20,7 +20,21 @@ const tweetController = {
           ...t.dataValues,
           isLiked: req.user.LikedTweets.map(d => d.id).includes(t.id)
         }))
-        return res.render('tweets', { tweets: data, user: req.user })
+        return data
+      }).then(tweets => {
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          return res.render('tweets', { tweets: tweets, user: req.user, users: users })
+        })
       })
     }
     return res.render('admin/tweets', { layout: 'blank', tweets: data, user: req.user })
@@ -57,7 +71,19 @@ const tweetController = {
     })
       .then(tweet => {
         const isLiked = tweet.LikedUsers.map(t => t.id).includes(req.user.id)
-        return res.render('tweet', { tweet: tweet, isLiked: isLiked })
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users })
+        })
       })
   },
   postReply: (req, res) => {
