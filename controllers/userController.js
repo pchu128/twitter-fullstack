@@ -367,7 +367,44 @@ const userController = {
   },
 
   getUserLikes: (req, res) => {
+    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+        { model: Tweet, as: 'LikedTweets', include: [User, Reply, { model: User, as: 'LikedUsers' }] }
+      ]
+    })
+      .then(user => {
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          // 整理 users 資料
+          users = users.map(user => ({
+            ...user.dataValues,
+            //計算追蹤者人數
+            FollowerCount: user.Followers.length,
+            // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          // 依追蹤者人數排序清單
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          //整理 user資料
+          user = user.toJSON()
+          // 依加入時間排序liked tweet
+          let likes = user.LikedTweets
+          likes = likes.sort((a, b) => b.Like.createdAt - a.Like.createdAt)
+          //確認get user page是否為跟隨中使用者
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
 
+          return res.render('userLikes', { user, users, loginUserId, loginUserisFollowed, likes })
+
+        })
+      })
   },
 
   getUserReplies: (req, res) => {
