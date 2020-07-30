@@ -14,7 +14,7 @@ const userController = {
   },
 
   signUp: (req, res) => {
-    if (req.body.passwordCheck !== req.body.password) {
+    if (req.body.checkPassword !== req.body.password) {
       req.flash('error_messages', "Confirm password doesn't match.")
       return res.redirect('back')
     } else {
@@ -71,7 +71,7 @@ const userController = {
 
   setting: (req, res) => {
 
-    if (req.body.passwordCheck !== req.body.password) {
+    if (req.body.checkPassword !== req.body.password) {
       req.flash('error_messages', "Confirm password doesn't match.")
       return res.redirect('back')
 
