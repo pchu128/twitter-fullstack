@@ -158,7 +158,7 @@ const userController = {
 
   editUser: (req, res) => {
     //only login user can enter edit profile page
-    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
+    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect('back') }
     return User.findByPk(req.params.id)
       .then(user => {
         //抓取Topuser清單
@@ -176,6 +176,7 @@ const userController = {
           return res.render('profileEdit', { user: user.toJSON(), users })
         })
       })
+
   },
 
   postUser: (req, res) => {
@@ -267,14 +268,14 @@ const userController = {
   },
 
   addFollowing: (req, res) => {
-    //can not follow/unfollow self
-    if (helpers.getUser(req).id === Number(req.params.userId)) { 
+    //can not follow self
+    if (helpers.getUser(req).id === Number(req.body.id)) { 
       req.flash('error_messages', 'You cannot follow yourself.')
       return res.render('tweets') 
     }
     return Followship.create({
       followerId: helpers.getUser(req).id,
-      followingId: req.params.userId
+      followingId: req.body.id
     })
       .then((followship) => {
         return res.redirect('back')
