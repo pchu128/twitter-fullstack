@@ -410,12 +410,10 @@ const userController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
           // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-
           //整理 user資料
           user = user.toJSON()
           // 依加入時間排序liked tweet
@@ -441,9 +439,11 @@ const userController = {
         {
           model: Reply,
           where: { UserId: req.params.id },
-          order: [['createdAt', 'DESC']],
           include: [{ model: Tweet, include: [User, Reply, { model: User, as: 'LikedUsers' }] }]
         }
+      ],
+      order: [
+        [Reply, 'createdAt', 'DESC']
       ]
     })
       .then(user => {
