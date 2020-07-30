@@ -269,9 +269,9 @@ const userController = {
 
   addFollowing: (req, res) => {
     //can not follow self
-    if (helpers.getUser(req).id === Number(req.body.id)) { 
+    if (helpers.getUser(req).id === Number(req.body.id)) {
       req.flash('error_messages', 'You cannot follow yourself.')
-      return res.render('tweets') 
+      return res.render('tweets')
     }
     return Followship.create({
       followerId: helpers.getUser(req).id,
@@ -410,12 +410,10 @@ const userController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
           // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-
           //整理 user資料
           user = user.toJSON()
           // 依加入時間排序liked tweet
@@ -432,7 +430,48 @@ const userController = {
   },
 
   getUserReplies: (req, res) => {
+    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+        {
+          model: Reply,
+          where: { UserId: req.params.id },
+          include: [{ model: Tweet, include: [User, Reply, { model: User, as: 'LikedUsers' }] }]
+        }
+      ],
+      order: [
+        [Reply, 'createdAt', 'DESC']
+      ]
+    })
+      .then(user => {
+        //抓取Topuser清單
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          // 依追蹤者人數排序清單(TopUser清單結尾)
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
 
+          //整理 user & replies資料
+          user = user.toJSON()
+          let replies = user.Replies
+          //確認get user page是否為跟隨中使用者
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
+
+          return res.render('userReplies', { user, users, loginUserId, loginUserisFollowed, replies })
+
+        })
+      })
   },
 }
 
