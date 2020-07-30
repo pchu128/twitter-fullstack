@@ -122,7 +122,8 @@ const userController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           // 整理 users 資料
           users = users.map(user => ({
@@ -307,7 +308,10 @@ const userController = {
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followerByOrderCreated }
+              where: [
+                { id: followerByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({
@@ -347,7 +351,10 @@ const userController = {
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followingByOrderCreated }
+              where: [
+                { id: followingByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({

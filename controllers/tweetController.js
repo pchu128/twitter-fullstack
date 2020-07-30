@@ -26,7 +26,8 @@ const tweetController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           users = users.map(user => ({
             ...user.dataValues,
@@ -76,7 +77,8 @@ const tweetController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           users = users.map(user => ({
             ...user.dataValues,
