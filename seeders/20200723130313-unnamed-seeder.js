@@ -5,23 +5,12 @@ const faker = require('faker')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     queryInterface.bulkInsert('Users', [{
-      email: 'root@example.com',
-      password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      role: 'admin',
-      account: '@root',
-      name: 'root',
-      avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
-      introduction: faker.lorem.sentences(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }, {
       email: 'user1@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       account: '@user1',
       name: 'user1',
       avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
+      cover: faker.image.abstract(),
       introduction: faker.lorem.sentences(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -31,7 +20,7 @@ module.exports = {
       account: '@user2',
       name: 'user2',
       avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
+      cover: faker.image.cats(),
       introduction: faker.lorem.sentences(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -41,7 +30,7 @@ module.exports = {
       account: '@user3',
       name: 'user3',
       avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
+      cover: faker.image.animals(),
       introduction: faker.lorem.sentences(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -51,7 +40,7 @@ module.exports = {
       account: '@user4',
       name: 'user4',
       avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
+      cover: faker.image.city(),
       introduction: faker.lorem.sentences(),
       createdAt: new Date(),
       updatedAt: new Date()
@@ -61,23 +50,34 @@ module.exports = {
       account: '@user5',
       name: 'user5',
       avatar: faker.image.avatar(),
-      cover: faker.image.nature(),
+      cover: faker.image.technics(),
+      introduction: faker.lorem.sentences(),
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }, {
+      email: 'root@example.com',
+      password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
+      role: 'admin',
+      account: '@root',
+      name: 'root',
+      avatar: faker.image.avatar(),
+      cover: faker.image.transport(),
       introduction: faker.lorem.sentences(),
       createdAt: new Date(),
       updatedAt: new Date()
     }], {})
     queryInterface.bulkInsert('Tweets',
-      Array.from({ length: 60 }).map((_, d) => ({
-        UserId: (d % 6) + 1,
+      Array.from({ length: 50 }).map((_, d) => ({
+        UserId: (d % 5) + 1,
         description: faker.lorem.sentences(),
         createdAt: new Date(),
         updatedAt: new Date()
       }))
     )
     return queryInterface.bulkInsert('Replies',
-      Array.from({ length: 160 }).map((_, d) => ({
-        UserId: Math.floor(Math.random() * 6) + 1,
-        TweetId: (d % 60) + 1,
+      Array.from({ length: 150 }).map((_, d) => ({
+        UserId: Math.floor(Math.random() * 5) + 1,
+        TweetId: (d % 50) + 1,
         comment: faker.lorem.sentences(),
         createdAt: new Date(),
         updatedAt: new Date()

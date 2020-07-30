@@ -126,12 +126,12 @@
                 <div class="col-4">
                   {{#ifNotCond ../loginUserId this.id}}
                   {{#if this.isFollowed }}
-                  <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button
-                      type="submit" class="btn btn-primary" style="font-size:1px; margin:0px; padding:1px;">正在跟隨</button>
+                  <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
+                    <button type="submit" class="btn btn-primary" style="border-radius: 100px">正在跟隨</button>
                   </form>
                   {{else}}
-                  <form action="/followships/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
-                      class="btn btn-outline-primary" style="font-size:1px; margin:0px; padding:1px;">跟隨</button></form>
+                  <form action="/followships/{{this.id}}" method="POST" style="display: contents;">
+                    <button type="submit" class="btn btn-outline-primary" style="border-radius: 100px">跟隨</button></form>
                   {{/if}}
                   {{/ifNotCond}}
                 </div>

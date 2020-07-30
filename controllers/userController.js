@@ -129,7 +129,8 @@ const userController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           // 整理 users 資料
           users = users.map(user => ({
@@ -299,8 +300,10 @@ const userController = {
 
   getFollowers: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = helpers.getUser(req).id
-    return User.findByPk(req.params.id)
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -314,10 +317,14 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followerByOrderCreated }
+              where: [
+                { id: followerByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({
@@ -339,8 +346,10 @@ const userController = {
 
   getFollowings: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = helpers.getUser(req).id
-    return User.findByPk(req.params.id)
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -354,10 +363,14 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followingByOrderCreated }
+              where: [
+                { id: followingByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({
