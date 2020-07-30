@@ -291,7 +291,9 @@ const userController = {
   getFollowers: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = req.user.id
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -305,6 +307,7 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
@@ -334,7 +337,9 @@ const userController = {
   getFollowings: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = req.user.id
-    return User.findByPk(req.params.id)
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -348,6 +353,7 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
