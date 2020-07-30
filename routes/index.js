@@ -33,6 +33,7 @@ module.exports = (app, passport) => {
   app.post('/tweets', authenticated, tweetController.postTweet)
   // reply
   app.get('/tweets/:id', authenticated, tweetController.getTweet)
+  app.get('/tweets/:id/replies', authenticated, tweetController.getTweet)
   app.post('/tweets/:id/replies', authenticated, tweetController.postReply)
   // like
   app.post('/tweets/:id/like', authenticated, tweetController.addLike)
@@ -48,12 +49,14 @@ module.exports = (app, passport) => {
   // followship page
   app.get('/users/:id/followers', authenticated, userController.getFollowers)
   app.get('/users/:id/followings', authenticated, userController.getFollowings)
+  //user like page
+  app.get('/users/:id/likes', authenticated, userController.getUserLikes)
 
   // admin backstage
   app.get('/admin/tweets', authenticatedAdmin, adminController.getTweets)
   app.delete('/admin/tweets/:id', authenticatedAdmin, adminController.deleteTweet)
   app.get('/admin/users', authenticatedAdmin, adminController.getUsers)
-  app.get('/admin/setting/:id', authenticatedAdmin, userController.settingPage)
+  app.get('/admin/setting/:id', authenticatedAdmin, adminController.adminSettingPage)
   app.post('/admin/setting/:id', authenticatedAdmin, userController.setting)
   app.get('/admin/signout', authenticatedAdmin, userController.signOut)
 
@@ -64,7 +67,7 @@ module.exports = (app, passport) => {
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
   app.get('/signout', authenticated, userController.signOut)
 
-  app.get('/admin/signin', (req, res) => res.render('./admin/signin', {layout: 'blank'}))
+  app.get('/admin/signin', (req, res) => res.render('./admin/signin', { layout: 'blank' }))
   app.post('/admin/signin', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) { return next(err) }

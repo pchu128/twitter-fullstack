@@ -7,7 +7,7 @@ const Like = db.Like
 
 const adminController = {
   adminSettingPage: (req, res) => {
-    User.findByPk(req.user.id).then(user => {
+    User.findByPk(helpers.getUser(req).id).then(user => {
       return res.render('setting', {
         layout: 'admin',
         account: user.account,
@@ -24,7 +24,7 @@ const adminController = {
     }).then(tweets => {
       tweets = tweets.map(t => ({
         ...t.dataValues,
-        description: t.dataValues.description.substring(0, 50) + '...'
+        description: t.dataValues.description.substring(0, 50)
       }))
       return res.render('./admin/tweets', { layout: 'admin', tweets: tweets })
     })
