@@ -7,7 +7,7 @@ const Like = db.Like
 
 const adminController = {
   adminSettingPage: (req, res) => {
-    User.findByPk(req.user.id).then(user => {
+    User.findByPk(helpers.getUser(req).id).then(user => {
       return res.render('setting', {
         layout: 'admin',
         account: user.account,
