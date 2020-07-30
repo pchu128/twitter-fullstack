@@ -116,7 +116,13 @@ const userController = {
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' },
-        { model: User, as: 'Followers' }
+        { model: User, as: 'Followers' },
+        {
+          model: Tweet,
+          where: { UserId: req.params.id },
+          include: [User, Reply,
+            { model: User, as: 'LikedUsers' }]
+        },
       ]
     })
       .then(user => {
@@ -135,29 +141,16 @@ const userController = {
           }))
           // 依追蹤者人數排序清單
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          //將user, users加入陣列回傳
-          let results = [user, users]
-          return results
-        }).then((results) => {
-          //取得回傳陣列值
-          let user = results[0]
-          let users = results[1]
-          return Tweet.findAll({
-            order: [['createdAt', 'DESC']],
-            where: { UserId: user.toJSON().id },
-            include: [User, Reply]
-          }).then((tweets) => {
-            tweets = tweets.map(user => ({ ...user.dataValues, }))
-            //console.log('tweets===>', tweets)
-            //取得user following/follower人數
-            let followingNum = user.toJSON().Followings.length
-            let followerNum = user.toJSON().Followers.length
-            //確認get user page是否為跟隨中使用者
-            function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
-            let loginUserisFollowed = users.find(findIsFollowed).isFollowed
+          //整理 user資料
+          user = user.toJSON()
+          //依推文時間排序user tweets
+          let tweets = user.Tweets
+          tweets = tweets.sort((a, b) => b.createdAt - a.createdAt)
+          //確認get user page是否為跟隨中使用者
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
 
-            return res.render('profile', { user: user.toJSON(), users: users, followingNum, followerNum, loginUserId, loginUserisFollowed, tweets: tweets })
-          })
+          return res.render('profile', { user, users, loginUserId, loginUserisFollowed, tweets: tweets })
         })
       })
   },
@@ -167,7 +160,20 @@ const userController = {
     if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
     return User.findByPk(req.params.id)
       .then(user => {
-        return res.render('profileEdit', { user: user.toJSON() })
+        //抓取Topuser清單
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          return res.render('profileEdit', { user: user.toJSON(), users })
+        })
       })
   },
 
@@ -368,6 +374,51 @@ const userController = {
             })
           })
       })
+  },
+
+  getUserLikes: (req, res) => {
+    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+        { model: Tweet, as: 'LikedTweets', include: [User, Reply, { model: User, as: 'LikedUsers' }] }
+      ]
+    })
+      .then(user => {
+        //抓取Topuser清單
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ]
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          // 依追蹤者人數排序清單(TopUser清單結尾)
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+
+          //整理 user資料
+          user = user.toJSON()
+          // 依加入時間排序liked tweet
+          let likes = user.LikedTweets
+          likes = likes.sort((a, b) => b.Like.createdAt - a.Like.createdAt)
+          //確認get user page是否為跟隨中使用者
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
+
+          return res.render('userLikes', { user, users, loginUserId, loginUserisFollowed, likes })
+
+        })
+      })
+  },
+
+  getUserReplies: (req, res) => {
+
   },
 }
 
