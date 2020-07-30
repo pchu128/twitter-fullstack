@@ -157,7 +157,7 @@ const userController = {
 
   editUser: (req, res) => {
     //only login user can enter edit profile page
-    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
+    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect('back') }
     return User.findByPk(req.params.id)
       .then(user => {
         //抓取Topuser清單
@@ -175,6 +175,7 @@ const userController = {
           return res.render('profileEdit', { user: user.toJSON(), users })
         })
       })
+
   },
 
   postUser: (req, res) => {

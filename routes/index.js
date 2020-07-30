@@ -41,7 +41,7 @@ module.exports = (app, passport) => {
 
   //user profile route controller
   app.get('/users/:id/tweets', authenticated, userController.getUser)
-  app.get('/api/users/:id', authenticated, userController.editUser)
+  app.get('/users/:id/edit', authenticated, userController.editUser)
   app.post('/api/users/:id', authenticated, upload.fields([{ name: 'avatar' }, { name: 'cover' }]), userController.postUser) //must to add middleware of upload.single('') because of enctype="multipart/form-data"
   //user followship
   app.post('/followships', authenticated, userController.addFollowing)
