@@ -48,6 +48,8 @@ module.exports = (app, passport) => {
   // followship page
   app.get('/users/:id/followers', authenticated, userController.getFollowers)
   app.get('/users/:id/followings', authenticated, userController.getFollowings)
+  //user like page
+  app.get('/users/:id/likes', authenticated, userController.getUserLikes)
 
   // admin backstage
   app.get('/admin/tweets', authenticatedAdmin, adminController.getTweets)
@@ -64,7 +66,7 @@ module.exports = (app, passport) => {
   app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
   app.get('/signout', authenticated, userController.signOut)
 
-  app.get('/admin/signin', (req, res) => res.render('./admin/signin', {layout: 'blank'}))
+  app.get('/admin/signin', (req, res) => res.render('./admin/signin', { layout: 'blank' }))
   app.post('/admin/signin', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
       if (err) { return next(err) }
