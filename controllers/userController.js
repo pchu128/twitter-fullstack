@@ -129,7 +129,8 @@ const userController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           // 整理 users 資料
           users = users.map(user => ({
@@ -157,7 +158,7 @@ const userController = {
 
   editUser: (req, res) => {
     //only login user can enter edit profile page
-    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
+    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect('back') }
     return User.findByPk(req.params.id)
       .then(user => {
         //抓取Topuser清單
@@ -175,6 +176,7 @@ const userController = {
           return res.render('profileEdit', { user: user.toJSON(), users })
         })
       })
+
   },
 
   postUser: (req, res) => {
@@ -266,14 +268,14 @@ const userController = {
   },
 
   addFollowing: (req, res) => {
-    //can not follow/unfollow self
-    if (helpers.getUser(req).id === Number(req.params.userId)) {
+    //can not follow self
+    if (helpers.getUser(req).id === Number(req.body.id)) {
       req.flash('error_messages', 'You cannot follow yourself.')
       return res.render('tweets')
     }
     return Followship.create({
       followerId: helpers.getUser(req).id,
-      followingId: req.params.userId
+      followingId: req.body.id
     })
       .then((followship) => {
         return res.redirect('back')
@@ -299,8 +301,10 @@ const userController = {
 
   getFollowers: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = helpers.getUser(req).id
-    return User.findByPk(req.params.id)
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -314,10 +318,14 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followerByOrderCreated }
+              where: [
+                { id: followerByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({
@@ -339,8 +347,10 @@ const userController = {
 
   getFollowings: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = helpers.getUser(req).id
-    return User.findByPk(req.params.id)
+    let loginUserId = req.user.id
+    return User.findByPk(req.params.id, {
+      include: [Tweet]
+    })
       .then((user) => {
         return Followship.findAll({
           raw: true,
@@ -354,10 +364,14 @@ const userController = {
               raw: true,
               nest: true,
               include: [
+                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
-              where: { id: followingByOrderCreated }
+              where: [
+                { id: followingByOrderCreated },
+                { role: null }
+              ]
             }).then((users) => {
               // 整理 users 資料
               users = users.map(user => ({
