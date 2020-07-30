@@ -7,6 +7,7 @@ const helpers = require('../_helpers')
 
 const tweetController = {
   getTweets: (req, res) => {
+    let loginUserId = req.user.id
     if (!helpers.getUser(req).role) {
       return Tweet.findAll({
         include: [
@@ -25,7 +26,8 @@ const tweetController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           users = users.map(user => ({
             ...user.dataValues,
@@ -33,8 +35,7 @@ const tweetController = {
             isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-
-          return res.render('tweets', { tweets: tweets, user: helpers.getUser(req), users: users })
+          return res.render('tweets', { tweets: tweets, user: req.user, users: users, loginUserId: loginUserId })
         })
       })
     }
@@ -60,6 +61,7 @@ const tweetController = {
     }
   },
   getTweet: (req, res) => {
+    let loginUserId = req.user.id
     return Tweet.findByPk(req.params.id, {
       include: [
         User,
@@ -71,8 +73,21 @@ const tweetController = {
       ]
     })
       .then(tweet => {
-        const isLiked = tweet.LikedUsers.map(t => t.id).includes(helpers.getUser(req).id)
-        return res.render('tweet', { tweet: tweet, isLiked: isLiked })
+        const isLiked = tweet.LikedUsers.map(t => t.id).includes(req.user.id)
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ],
+          where: { role: null }
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users, loginUserId: loginUserId })
+        })
       })
   },
   postReply: (req, res) => {
