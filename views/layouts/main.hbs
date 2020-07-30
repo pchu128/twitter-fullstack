@@ -119,18 +119,18 @@
                     <img class="rounded-circle w-100" src="{{this.avatar}}" />
                   </a>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                   <p>{{this.name}}</p>
                 </div>
-                <div class="col-4">
+                <div class="col">
                   {{#ifNotCond ../loginUserId this.id}}
                   {{#if this.isFollowed }}
                   <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
-                    <button type="submit" class="btn btn-primary" style="border-radius: 100px">正在跟隨</button>
+                    <button type="submit" class="btn btn-primary" style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
                   </form>
                   {{else}}
                   <form action="/followships/{{this.id}}" method="POST" style="display: contents;">
-                    <button type="submit" class="btn btn-outline-primary" style="border-radius: 100px">跟隨</button></form>
+                    <button type="submit" class="btn btn-outline-primary" style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
                   {{/if}}
                   {{/ifNotCond}}
                 </div>
