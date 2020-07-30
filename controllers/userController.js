@@ -7,6 +7,7 @@ const Reply = db.Reply
 const Like = db.Like
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = process.env.IMGUR_CLIENT_ID
+const helpers = require('../_helpers')
 
 const userController = {
   signUpPage: (req, res) => {
@@ -14,7 +15,7 @@ const userController = {
   },
 
   signUp: (req, res) => {
-    if (req.body.passwordCheck !== req.body.password) {
+    if (req.body.checkPassword !== req.body.password) {
       req.flash('error_messages', "Confirm password doesn't match.")
       return res.redirect('back')
     } else {
@@ -42,7 +43,7 @@ const userController = {
   },
 
   signIn: (req, res) => {
-    User.findByPk(req.user.id).then(user => {
+    User.findByPk(helpers.getUser(req).id).then(user => {
       if (user.role === 'admin') {
         req.flash('error_messages', 'Admin please signs in with admin sign in page.')
         return res.redirect('back')
@@ -60,7 +61,7 @@ const userController = {
   },
 
   settingPage: (req, res) => {
-    User.findByPk(req.user.id).then(user => {
+    User.findByPk(helpers.getUser(req).id).then(user => {
       return res.render('setting', {
         account: user.account,
         name: user.name,
@@ -71,12 +72,12 @@ const userController = {
 
   setting: (req, res) => {
 
-    if (req.body.passwordCheck !== req.body.password) {
+    if (req.body.checkPassword !== req.body.password) {
       req.flash('error_messages', "Confirm password doesn't match.")
       return res.redirect('back')
 
     } else {
-      User.findByPk(req.user.id).then(user => {
+      User.findByPk(helpers.getUser(req).id).then(user => {
         let originalName = user.name
         let originalEmail = user.email
 
@@ -95,7 +96,7 @@ const userController = {
       })
     }
 
-    return User.findByPk(req.user.id)
+    return User.findByPk(helpers.getUser(req).id)
       .then(user => {
         user.update({
           email: req.body.email,
@@ -111,7 +112,7 @@ const userController = {
 
   getUser: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' },
@@ -135,8 +136,8 @@ const userController = {
             ...user.dataValues,
             //計算追蹤者人數
             FollowerCount: user.Followers.length,
-            // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           // 依追蹤者人數排序清單
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
@@ -156,7 +157,7 @@ const userController = {
 
   editUser: (req, res) => {
     //only login user can enter edit profile page
-    if (req.user.id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
+    if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect(`/users/${req.params.id}/tweets`) }
     return User.findByPk(req.params.id)
       .then(user => {
         //抓取Topuser清單
@@ -266,9 +267,12 @@ const userController = {
 
   addFollowing: (req, res) => {
     //can not follow/unfollow self
-    if (req.user.id === Number(req.params.userId)) { return res.redirect('back') }
+    if (helpers.getUser(req).id === Number(req.params.userId)) { 
+      req.flash('error_messages', 'You cannot follow yourself.')
+      return res.render('tweets') 
+    }
     return Followship.create({
-      followerId: req.user.id,
+      followerId: helpers.getUser(req).id,
       followingId: req.params.userId
     })
       .then((followship) => {
@@ -278,10 +282,10 @@ const userController = {
 
   removeFollowing: (req, res) => {
     //can not follow/unfollow self
-    if (req.user.id === Number(req.params.userId)) { return res.redirect('back') }
+    if (helpers.getUser(req).id === Number(req.params.userId)) { return res.redirect('back') }
     return Followship.findOne({
       where: {
-        followerId: req.user.id,
+        followerId: helpers.getUser(req).id,
         followingId: req.params.userId
       }
     })
@@ -295,7 +299,7 @@ const userController = {
 
   getFollowers: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id)
       .then((user) => {
         return Followship.findAll({
@@ -320,8 +324,8 @@ const userController = {
                 ...user,
                 //計算追蹤者人數
                 FollowerCount: user.Followers.length,
-                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
-                isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
+                isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followerByOrderCreated = followerByOrderCreated.map(order => {
                 return users.find(user => { return user.id === order })
@@ -335,7 +339,7 @@ const userController = {
 
   getFollowings: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id)
       .then((user) => {
         return Followship.findAll({
@@ -360,8 +364,8 @@ const userController = {
                 ...user,
                 //計算追蹤者人數
                 FollowerCount: user.Followers.length,
-                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得req.user.Followings
-                isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
+                isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followingByOrderCreated = followingByOrderCreated.map(order => {
                 return users.find(user => { return user.id === order })

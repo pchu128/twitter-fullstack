@@ -33,6 +33,7 @@ module.exports = (app, passport) => {
   app.post('/tweets', authenticated, tweetController.postTweet)
   // reply
   app.get('/tweets/:id', authenticated, tweetController.getTweet)
+  app.get('/tweets/:id/replies', authenticated, tweetController.getTweet)
   app.post('/tweets/:id/replies', authenticated, tweetController.postReply)
   // like
   app.post('/tweets/:id/like', authenticated, tweetController.addLike)

@@ -18,7 +18,7 @@ const tweetController = {
       }).then(tweets => {
         const data = tweets.map(t => ({
           ...t.dataValues,
-          isLiked: req.user.LikedTweets.map(d => d.id).includes(t.id)
+          isLiked: helpers.getUser(req).LikedTweets.map(d => d.id).includes(t.id)
         }))
         return data
       }).then(tweets => {
@@ -34,11 +34,11 @@ const tweetController = {
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
 
-          return res.render('tweets', { tweets: tweets, user: req.user, users: users })
+          return res.render('tweets', { tweets: tweets, user: helpers.getUser(req), users: users })
         })
       })
     }
-    return res.render('admin/tweets', { layout: 'blank', tweets: data, user: req.user })
+    return res.render('admin/tweets', { layout: 'blank', tweets: data, user: helpers.getUser(req) })
   },
 
   postTweet: (req, res) => {
@@ -51,7 +51,7 @@ const tweetController = {
       return res.redirect('back')
     } else {
       return Tweet.create({
-        UserId: req.user.id,
+        UserId: helpers.getUser(req).id,
         description: req.body.description
       })
         .then(tweet => {
@@ -71,7 +71,7 @@ const tweetController = {
       ]
     })
       .then(tweet => {
-        const isLiked = tweet.LikedUsers.map(t => t.id).includes(req.user.id)
+        const isLiked = tweet.LikedUsers.map(t => t.id).includes(helpers.getUser(req).id)
         return res.render('tweet', { tweet: tweet, isLiked: isLiked })
       })
   },
@@ -87,7 +87,7 @@ const tweetController = {
       return Reply.create({
         comment: req.body.comment,
         TweetId: req.body.TweetId,
-        UserId: req.user.id
+        UserId: helpers.getUser(req).id
       })
         .then(reply => {
           return res.redirect('back')
@@ -96,7 +96,7 @@ const tweetController = {
   },
   addLike: (req, res) => {
     Like.create({
-      UserId: req.user.id,
+      UserId: helpers.getUser(req).id,
       TweetId: req.params.id
     }).then((tweet) => {
       return res.redirect('back')
@@ -105,7 +105,7 @@ const tweetController = {
   removeLike: (req, res) => {
     Like.findOne({
       where: {
-        UserId: req.user.id,
+        UserId: helpers.getUser(req).id,
         TweetId: req.params.id
       }
     }).then(like => {
