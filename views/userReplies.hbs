@@ -1,0 +1,125 @@
+<div class="row border-right">
+  <div class="col mt-2">
+    <div class="row row-cols-1">
+      <div class="col">
+        <a href="">
+          <h5 class="ml-2"><i class="fas fa-long-arrow-alt-left"></i>
+        </a>
+        &nbsp;{{user.name}}</h5>
+        <small class="ml-2">&emsp;&emsp;{{tweets.length}} 推文</small>
+      </div>
+
+      <br />
+      <div class="" style="">
+        <img class="rounded-top" src="{{user.cover}}" style="width:100%; height: 200px;">
+      </div>
+      <div class="col">
+        <div class="row">
+          <div class="col ">
+            <img class="rounded-circle" src="{{user.avatar}}" style="width:50%; margin-top:-60px;">
+          </div>
+          <div class="col d-flex align-items-center">
+            {{#ifCond user.id loginUserId}}
+            <a class="btn btn-primary" href="/api/users/{{user.id}}">
+              編輯個人資料
+            </a>
+            {{/ifCond}}
+            {{!-- followship button --}}
+            {{#ifNotCond loginUserId user.id}}
+            {{#if loginUserisFollowed }}
+            <form action="/followships/{{user.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+                type="submit" class="btn btn-primary" style="font-size:1px; margin:0px; padding:1px;">正在跟隨</button>
+            </form>
+            {{else}}
+            <form action="/followships/{{user.id}}" method="POST" style="display: contents;"><button type="submit"
+                class="btn btn-outline-primary" style="font-size:1px; margin:0px; padding:1px;">跟隨</button></form>
+            {{/if}}
+            {{/ifNotCond}}
+          </div>
+        </div>
+        <h5>{{user.name}}</h5>
+        <small>{{user.email}}</small>
+        <p>{{user.introduction}}</p>
+        <p>{{user.Followings.length}}個跟隨中 {{user.Followers.length}}位跟隨者</p>
+      </div>
+
+      {{!-- Profile Nav --}}
+      <div class="col">
+        <ul class="nav nav-tabs bt-4">
+          <li class="nav-item">
+            <a class="nav-link" href="/users/{{user.id}}/tweets">推文</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/users/{{user.id}}/replies">推文與回覆</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/users/{{user.id}}/likes">喜歡的內容</a>
+          </li>
+        </ul>
+        <br />
+        <br />
+        {{!-- render 喜愛的內容 --}}
+        <div class="row">
+          <ul class="list-group">
+            {{#each replies}}
+            <li class="list-group-item">
+              <div class="col mt-3 border-top text-break">
+                <h6 class="card-title">
+                  <a href="/users/{{this.Tweet.User.id}}/tweets">
+                    <img class="mt-2"
+                      style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
+                      src="{{this.Tweet.User.avatar}}" />
+                    {{this.Tweet.User.name}}
+                  </a>
+                  <small class="text-muted">{{this.Tweet.User.account}}</small>
+                </h6>
+              </div>
+              <div class="text-break" style="display: inline;">
+                <a href="/tweets/{{this.Tweet.id}}">
+                  <p class="card-text">{{this.Tweet.description}}</p>
+                </a>
+                <p class="card-text">
+                <div class="row justify-content-around">
+                  <div class="col">
+                    <small class="text-muted">
+                      <i class="far fa-comment"> {{this.Tweet.Replies.length}}</i>
+                    </small>
+                  </div>
+                  <div class="col">
+                    <small class="text-muted">
+                      <i class="far fa-heart" style="color: red;"> {{this.Tweet.LikedUsers.length}}</i>
+                    </small>
+                  </div>
+                </div>
+                </p>
+              </div>
+
+              {{!-- Comment --}}
+              <div class="col border-top">
+                <h6>
+                  <a href="/users/{{../user.id}}/tweets">
+                    <img class="mt-2"
+                      style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
+                      src="{{../user.avatar}}" />
+                    {{../user.name}}
+                  </a>
+                  <small class="text-muted">{{../user.account}} ◆ {{moment this.createdAt}}</small>
+                </h6>
+                <span class="badge badge-primary" style="border-radius: 100px">
+                  <small>回覆 {{../user.account}}</small>
+                </span>
+                <p class="card-text">{{this.comment}}</p>
+
+              </div>
+            </li>
+            {{/each}}
+
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<br />
