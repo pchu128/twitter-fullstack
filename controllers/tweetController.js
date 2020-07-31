@@ -32,7 +32,7 @@ const tweetController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
           return res.render('tweets', { tweets: tweets, user: helpers.getUser(req), users: users, loginUserId: loginUserId })
@@ -83,7 +83,7 @@ const tweetController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
           return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users, loginUserId: loginUserId })

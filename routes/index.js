@@ -37,7 +37,7 @@ module.exports = (app, passport) => {
   app.post('/tweets/:id/replies', authenticated, tweetController.postReply)
   // like
   app.post('/tweets/:id/like', authenticated, tweetController.addLike)
-  app.delete('/tweets/:id/like', authenticated, tweetController.removeLike)
+  app.delete('/tweets/:id/unlike', authenticated, tweetController.removeLike)
 
   //user profile route controller
   app.get('/users/:id/tweets', authenticated, userController.getUser)
