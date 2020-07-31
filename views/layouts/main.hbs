@@ -130,8 +130,8 @@
                     <button type="submit" class="btn btn-primary" style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
                   </form>
                   {{else}}
-                  <form action="/followships/{{this.id}}" method="POST" style="display: contents;">
-                    <button type="submit" class="btn btn-outline-primary" style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
+                  <form action="/followships" method="POST" style="display: contents;">
+                    <button type="submit" class="btn btn-outline-primary" name="id" value="{{this.id}}" style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
                   {{/if}}
                   {{/ifNotCond}}
                 </div>
