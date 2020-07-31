@@ -170,7 +170,7 @@ const userController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
           return res.render('profileEdit', { user: user.toJSON(), users })
@@ -301,7 +301,7 @@ const userController = {
 
   getFollowers: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [Tweet]
     })
@@ -347,7 +347,7 @@ const userController = {
 
   getFollowings: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [Tweet]
     })
@@ -392,7 +392,7 @@ const userController = {
 
   getUserLikes: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' },
@@ -410,7 +410,7 @@ const userController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
@@ -431,7 +431,7 @@ const userController = {
 
   getUserReplies: (req, res) => {
     //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
-    let loginUserId = req.user.id
+    let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [
         { model: User, as: 'Followings' },
@@ -456,7 +456,7 @@ const userController = {
           users = users.map(user => ({
             ...user.dataValues,
             FollowerCount: user.Followers.length,
-            isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
