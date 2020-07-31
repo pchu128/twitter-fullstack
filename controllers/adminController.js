@@ -4,6 +4,7 @@ const User = db.User
 const Reply = db.Reply
 const Followship = db.Followship
 const Like = db.Like
+const helpers = require('../_helpers')
 
 const adminController = {
   adminSettingPage: (req, res) => {
