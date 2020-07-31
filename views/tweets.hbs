@@ -31,17 +31,21 @@
             </div>
             <div class="col">
               <div class="row">
-                <h6>
-                  {{this.User.name}}
-                  <small class="text-muted">{{this.User.account}} • {{moment this.createdAt}}</small>
-                </h6>
+                <div class="col">
+                  <h6>
+                    {{this.User.name}}
+                    <small class="text-muted">{{this.User.account}} • {{moment this.createdAt}}</small>
+                  </h6>
+                </div>
               </div>
               <div class="row">
-                <a href="/tweets/{{this.id}}">
-                  <p class="card-text">{{this.description}}</p>
-                </a>
+                <div class="col text-break">
+                  <a href="/tweets/{{this.id}}">
+                    <p class="card-text">{{this.description}}</p>
+                  </a>
+                </div>
               </div>
-              <div class="row">
+              <div class="row ml-1">
                 <p class="card-text">
                   <div class="row justify-content-around">
                     <div class="col">

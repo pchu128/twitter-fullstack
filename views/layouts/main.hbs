@@ -18,7 +18,7 @@
     <div>
       <div class="row mx-auto" style="width: 95vw;">
 
-        <div class="col-3 border-right" style="height: 100%;">
+        <div class="col-3 border-right">
           <div class="vertical-nav bg-white" id="sidebar">
             <div class="py-4 px-3 mb-2 ml-0">
               <div class="media d-flex align-items-center">
@@ -120,21 +120,19 @@
                     <img class="rounded-circle w-100" src="{{this.avatar}}" />
                   </a>
                 </div>
-                <div class="col-4">
+                <div class="col-3">
                   <p>{{this.name}}</p>
                 </div>
-                <div class="col-4">
+                <div class="col">
                   {{#ifNotCond ../loginUserId this.id}}
-                    {{#if this.isFollowed }}
-                      <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
-                        <button type="submit" class="btn btn-primary" style="font-size:1px; margin:0px; padding:1px;">正在跟隨</button>
-                      </form>
-                    {{else}}
-                      <form action="/followships" method="POST" style="display: contents;">
-                        <input type="hidden" name="id" value="{{this.id}}">
-                        <button type="submit" class="btn btn-outline-primary" style="font-size:1px; margin:0px; padding:1px;">跟隨</button>
-                      </form>
-                    {{/if}}
+                  {{#if this.isFollowed }}
+                  <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
+                    <button type="submit" class="btn btn-primary" style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
+                  </form>
+                  {{else}}
+                  <form action="/followships" method="POST" style="display: contents;">
+                    <button type="submit" class="btn btn-outline-primary" name="id" value="{{this.id}}" style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
+                  {{/if}}
                   {{/ifNotCond}}
                 </div>
               </div>

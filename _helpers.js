@@ -28,5 +28,10 @@ module.exports = {
 
   moment: function (a) {
     return moment(a).fromNow()
+  },
+
+  changeTime: function (a) {
+    moment.locale('zh-tw')
+    return moment(a).format('ll')
   }
 };

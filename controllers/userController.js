@@ -405,7 +405,8 @@ const userController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           users = users.map(user => ({
             ...user.dataValues,
@@ -451,7 +452,8 @@ const userController = {
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
-          ]
+          ],
+          where: { role: null }
         }).then(users => {
           users = users.map(user => ({
             ...user.dataValues,
