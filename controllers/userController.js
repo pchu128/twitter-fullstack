@@ -475,6 +475,22 @@ const userController = {
         })
       })
   },
+
+  chatroom: (req, res) => {
+    //let loginUserId = helpers.getUser(req).id
+    console.log('res====', res.user)
+    console.log('req====', req.user)
+    return User.findByPk(req.user.id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+      ]
+    }).then(user => {
+      console.log('chatroom user====', user.toJSON())
+      return res.render('chatroom')
+    })
+  },
+
 }
 
 module.exports = userController

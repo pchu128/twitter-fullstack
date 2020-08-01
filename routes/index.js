@@ -4,8 +4,12 @@ const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const passport = require('passport')
 const adminController = require('../controllers/adminController')
+const chatController = require('../controllers/chatController')
 const { authenticate } = require('passport')
 const helpers = require('../_helpers')
+
+const db = require('../models')
+const User = db.User
 
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
@@ -91,9 +95,7 @@ module.exports = (app, passport) => {
   app.get('/setting/:id', authenticated, userController.settingPage)
   app.post('/setting/:id', authenticated, userController.setting)
 
-  //chatroom
-  app.get('/chatroom', (req, res) => {
-    res.render('chatroom');
-  })
+  // //chatroom
+  app.get('/chatroom', authenticated, chatController.chatroom)
 
 }
