@@ -51,7 +51,8 @@
               </li>
               <li class="nav-item">
                 <a class="nav-link" href="#">
-                  <button style="border-radius: 100px;" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal">推文</button>
+                  <button style="border-radius: 100px;" type="button" class="btn btn-primary btn-block"
+                    data-toggle="modal" data-target="#exampleModal">推文</button>
                 </a>
               </li>
               <li class="nav-item">
@@ -65,7 +66,8 @@
         </div>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
           <form action="/tweets" method="POST">
             <div class="modal-dialog">
               <div class="modal-content">
@@ -76,8 +78,10 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;" src="{{user.avatar}}" />
-                  <input class="form-control border-0" type="text" name="description" id="description" placeholder="有甚麼新鮮事" style="width: 400px;display: inline;border-radius: 100px;"></input>
+                  <img style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
+                    src="{{user.avatar}}" />
+                  <input class="form-control border-0" type="text" name="description" id="description"
+                    placeholder="有甚麼新鮮事" style="width: 400px;display: inline;border-radius: 100px;"></input>
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary" style="border-radius: 100px">推文</button>
@@ -127,11 +131,13 @@
                   {{#ifNotCond ../loginUserId this.id}}
                   {{#if this.isFollowed }}
                   <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
-                    <button type="submit" class="btn btn-primary" style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
+                    <button type="submit" class="btn btn-primary"
+                      style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
                   </form>
                   {{else}}
                   <form action="/followships" method="POST" style="display: contents;">
-                    <button type="submit" class="btn btn-outline-primary" name="id" value="{{this.id}}" style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
+                    <button type="submit" class="btn btn-outline-primary" name="id" value="{{this.id}}"
+                      style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
                   {{/if}}
                   {{/ifNotCond}}
                 </div>

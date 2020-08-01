@@ -27,6 +27,8 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
+
+
   // Index page
   app.get('/', authenticated, (req, res) => res.redirect('/tweets'))
   app.get('/tweets', authenticated, tweetController.getTweets)
@@ -88,4 +90,10 @@ module.exports = (app, passport) => {
   // setting
   app.get('/setting/:id', authenticated, userController.settingPage)
   app.post('/setting/:id', authenticated, userController.setting)
+
+  //chatroom
+  app.get('/chatroom', (req, res) => {
+    res.render('chatroom');
+  })
+
 }
