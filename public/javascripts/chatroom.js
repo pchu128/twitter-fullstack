@@ -45,7 +45,7 @@ function appendData(obj) {
       `
             <div class="chat">
                 <div class="group">
-                    <div class="chatName" data-userid="${element.userId}">${element.name}：</div>
+                    <div class="chatName" data-userid="${element.userId}">${element.name}</div>
                     <div class="chatMsg">${element.msg}</div>
                 </div>
                 <div class="time">${moment(element.time).fromNow()}</div>
