@@ -9,17 +9,17 @@ const helpers = require('../_helpers')
 
 const chatController = {
   chatroom: (req, res) => {
-    // //let loginUserId = helpers.getUser(req).id
-    // return User.findByPk(helpers.getUser(req).id, {
-    //   include: [
-    //     { model: User, as: 'Followings' },
-    //     { model: User, as: 'Followers' },
-    //   ]
-    // }).then(user => {
-    //   console.log('chatroom user====', user.toJSON())
-    //   return res.render('chatroom', { user: user.toJSON() })
-    // })
-    return res.render('chatroom')
+    //let loginUserId = helpers.getUser(req).id
+    return User.findByPk(helpers.getUser(req).id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+      ]
+    }).then(user => {
+      console.log('chatroom user====', user.toJSON())
+      return res.render('chatroom', { user: user.toJSON() })
+    })
+    //return res.render('chatroom')
   },
 }
 

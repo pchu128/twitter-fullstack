@@ -1,25 +1,25 @@
-console.log('this is chatroom.js')
-console.log('Selector:', document.getElementById("msgButton").innerHTML)
 
+//監聽"送出"button
 document.getElementById("msgButton").addEventListener('click', () => {
-  console.log('chick send=======')
   Send();
 });
 
+//送出訊息
 function Send() {
-
-  let name = document.querySelector('#chatName').value;
+  let name = document.querySelector('#chatName').innerHTML;
   let msg = document.querySelector('#chatMsg').value;
-  if (!msg && !name) {
-    alert('請輸入大名和訊息');
+  if (!msg) {
+    alert('請輸入訊息');
     return;
   }
+  //console.log('here is name.innerHTLM', name)
   let data = {
     name: name,
     msg: msg,
   };
   socket.emit('message', data);
-  document.querySelector('#msg').value = '';
+  //清空原輸入訊息
+  document.querySelector('#chatMsg').value = '';
 }
 
 socket.on('message', (obj) => {
@@ -27,6 +27,7 @@ socket.on('message', (obj) => {
   appendData([obj]);
 });
 
+//將訊息加入聊天內容
 function appendData(obj) {
 
   let el = document.querySelector('.chats');
@@ -37,8 +38,8 @@ function appendData(obj) {
       `
             <div class="chat">
                 <div class="group">
-                    <div class="name">${element.name}：</div>
-                    <div class="msg">${element.msg}</div>
+                    <div class="chatName">${element.name}：</div>
+                    <div class="chatMsg">${element.msg}</div>
                 </div>
                 <div class="time">${moment(element.time).fromNow()}</div>
             </div>

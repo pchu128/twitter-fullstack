@@ -96,6 +96,6 @@ module.exports = (app, passport) => {
   app.post('/setting/:id', authenticated, userController.setting)
 
   // //chatroom
-  app.get('/chatroom', chatController.chatroom)
+  app.get('/chatroom', authenticated, chatController.chatroom)
 
 }

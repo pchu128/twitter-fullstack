@@ -3,21 +3,25 @@
   <div class="chats">
     <div class="chat">
       <div class="group">
-        <div class="name">Robby：</div>
-        <div class="msg">Hi~</div>
+        <div class="chatName">
+          <a href="/users/{{user.id}}/tweets">
+            <img class="rounded-circle" style="width: 30px;" src="{{user.avatar}}" />
+            <span>{{user.name}}</span>
+          </a>
+        </div>
+        <div class="chatMsg"> 進入聊天室</div>
       </div>
-      <div class="time">11分鐘前</div>
-    </div>
-    <div class="chat">
-      <div class="group">
-        <div class="name">Robby：</div>
-        <div class="msg">Hola~</div>
-      </div>
-      <div class="time">10分鐘前</div>
+      <div class="time"></div>
     </div>
   </div>
   <div class="message">
-    <input id="chatName" type="text" placeholder="your name" />
+    <div id="chatName" style="display:inline;">
+      <a href="/users/{{user.id}}/tweets">
+        <img class="rounded-circle" style="width: 30px;" src="{{user.avatar}}" />
+        <span>{{user.name}}</span>
+      </a>
+    </div>
+    {{!-- <input id="chatName" type="text" placeholder="your name" /> --}}
     <input id="chatMsg" type="text" placeholder="input the message" />
     <button id="msgButton" type="button">送出</button>
   </div>
