@@ -6,7 +6,7 @@ document.getElementById("msgButton").addEventListener('click', () => {
 
 //送出訊息
 function Send() {
-  let userId = document.querySelector('#chatName').dataset.userid
+  let userId = document.querySelector('#inputChatName').dataset.userid
   let name = document.querySelector('#chatName').innerHTML;
   let msg = document.querySelector('#chatMsg').value;
   if (!msg) {
@@ -19,6 +19,7 @@ function Send() {
     name: name,
     msg: msg,
   };
+  console.log('send message date:', data)
   socket.emit('message', data);
   //清空原輸入訊息
   document.querySelector('#chatMsg').value = '';
@@ -72,7 +73,7 @@ function appendHistoryData(obj) {
             </div>
             <div class="chatMsg">${element.message}</div>
           </div>
-          <div class="time">${element.createdAt}</div>
+          <div class="time">${moment(element.createdAt).fromNow()}</div>
         </div>
             `;
   });

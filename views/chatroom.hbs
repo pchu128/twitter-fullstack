@@ -21,7 +21,7 @@
         <span>{{user.name}}</span>
       </a>
     </div>
-    {{!-- <input id="chatName" type="text" placeholder="your name" /> --}}
+    <input type="hidden" id="inputChatName" data-userid="{{user.id}}" placeholder="your name" />
     <input id="chatMsg" type="text" placeholder="input the message" />
     <button id="msgButton" type="button">送出</button>
   </div>

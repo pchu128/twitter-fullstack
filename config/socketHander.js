@@ -12,7 +12,7 @@ class SocketHander {
         ]
       })
         .then((messages) => {
-          //messages = messages.toJSON()
+          //console.log('messages===>',messages)
           messages = messages.map(message => ({
             ...message.dataValues,
             User: message.User.dataValues
@@ -25,7 +25,7 @@ class SocketHander {
   }
 
   storeMessages(data) {
-    console.log(data);
+    //console.log('storeMessages====>',data);
     return Message.create({
       UserId: data.userId,
       message: data.msg,
