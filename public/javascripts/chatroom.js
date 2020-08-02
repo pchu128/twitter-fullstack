@@ -15,7 +15,7 @@ function Send() {
   }
   //console.log('here is name.innerHTLM', name)
   let data = {
-    userId: userId
+    userId: userId,
     name: name,
     msg: msg,
   };
@@ -24,14 +24,19 @@ function Send() {
   document.querySelector('#chatMsg').value = '';
 }
 
+//取得history並顯示
+socket.on('history', (obj) => {
+  if (obj.length > 0) {
+    appendHistoryData(obj)
+  }
+});
+
 socket.on('message', (obj) => {
-  console.log(obj);
   appendData([obj]);
 });
 
 //將訊息加入聊天內容
 function appendData(obj) {
-
   let el = document.querySelector('.chats');
   let html = el.innerHTML;
 
@@ -48,4 +53,34 @@ function appendData(obj) {
             `;
   });
   el.innerHTML = html.trim();
+  scrollWindow()
+}
+
+function appendHistoryData(obj) {
+  let el = document.querySelector('.chats');
+  let html = el.innerHTML;
+
+  obj.forEach(element => {
+    html += `
+        <div class="chat">
+          <div class="group">
+            <div class="chatName" id="chatName" data-userid="${element.User.id}">
+              <a href="/users/${element.User.id}/tweets">
+                <img class="rounded-circle" style="width: 30px;" src="${element.User.avatar}" />
+                <span>${element.User.name}</span>
+              </a>：
+            </div>
+            <div class="chatMsg">${element.message}</div>
+          </div>
+          <div class="time">${element.createdAt}</div>
+        </div>
+            `;
+  });
+  el.innerHTML = html.trim();
+  scrollWindow()
+}
+//卷軸自動捲到底
+function scrollWindow() {
+  let h = document.querySelector('.chats');
+  h.scrollTo(0, h.scrollHeight);
 }
