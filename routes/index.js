@@ -88,4 +88,7 @@ module.exports = (app, passport) => {
   // setting
   app.get('/setting/:id', authenticated, userController.settingPage)
   app.post('/setting/:id', authenticated, userController.setting)
+
+  // chat
+  app.get('/users/:id/chat', authenticated, userController.chatPage)
 }

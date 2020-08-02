@@ -475,6 +475,12 @@ const userController = {
         })
       })
   },
+
+  chatPage: (req, res) => {
+    User.findByPk(helpers.getUser(req).id).then(user => {
+      return res.render('chat', { user: user })
+    })
+  }
 }
 
 module.exports = userController
