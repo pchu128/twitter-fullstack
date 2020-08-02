@@ -6,6 +6,7 @@ document.getElementById("msgButton").addEventListener('click', () => {
 
 //送出訊息
 function Send() {
+  let userId = document.querySelector('#chatName').dataset.userid
   let name = document.querySelector('#chatName').innerHTML;
   let msg = document.querySelector('#chatMsg').value;
   if (!msg) {
@@ -14,6 +15,7 @@ function Send() {
   }
   //console.log('here is name.innerHTLM', name)
   let data = {
+    userId: userId
     name: name,
     msg: msg,
   };
@@ -38,7 +40,7 @@ function appendData(obj) {
       `
             <div class="chat">
                 <div class="group">
-                    <div class="chatName">${element.name}：</div>
+                    <div class="chatName" data-userid="${element.userId}">${element.name}：</div>
                     <div class="chatMsg">${element.msg}</div>
                 </div>
                 <div class="time">${moment(element.time).fromNow()}</div>
