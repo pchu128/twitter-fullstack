@@ -2,8 +2,8 @@ const db = require('../models')
 const Message = db.Message
 const User = db.User
 
-class SocketHander {
-  getMessages() {
+const SocketHander = {
+  getMessages: () => {
     return new Promise((resolve, reject) => {
       Message.findAll({
         include: [User],
@@ -21,16 +21,16 @@ class SocketHander {
           return resolve(messages)
         })
     })
+  },
 
-  }
-
-  storeMessages(data) {
+  storeMessages: (data) => {
     //console.log('storeMessages====>',data);
     return Message.create({
       UserId: data.userId,
       message: data.msg,
     })
-  }
+  },
+
 }
 
 module.exports = SocketHander

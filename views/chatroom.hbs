@@ -15,15 +15,14 @@
     </div> --}}
   </div>
   <div class="message">
-    <div id="chatName" style="display:inline;">
+    <div id="inputChatName" data-userid="{{user.id}}" style="display:inline;">
       <a href="/users/{{user.id}}/tweets">
         <img class="rounded-circle" style="width: 30px;" src="{{user.avatar}}" />
         <span>{{user.name}}</span>
       </a>
     </div>
-    <input type="hidden" id="inputChatName" data-userid="{{user.id}}" placeholder="your name" />
-    <input id="chatMsg" type="text" placeholder="input the message" />
-    <button id="msgButton" type="button">送出</button>
+    <input id="inputChatMsg" type="text" placeholder="input the message" />
+    <button id="inputMsgButton" type="button">送出</button>
   </div>
 </body>
 
