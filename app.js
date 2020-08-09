@@ -48,16 +48,15 @@ server.listen(port, () => {
 //socket.io
 io.on('connection', async (socket) => {
   console.log('a user connected');
-  socketHander = new SocketHander();
 
-  const history = await socketHander.getMessages();
+  const history = await SocketHander.getMessages();
   //io.emit('history', history);
   //將歷史訊息的廣播對象鎖定為當前用戶
   const socketid = socket.id;
   io.to(socketid).emit('history', history);
 
   socket.on("message", (obj) => {
-    socketHander.storeMessages(obj);
+    SocketHander.storeMessages(obj);
     io.emit("message", obj);
   });
 
