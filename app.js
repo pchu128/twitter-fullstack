@@ -17,15 +17,13 @@ const io = require('socket.io')(server);
 const SocketHander = require('./config/socketHander')
 const port = process.env.PORT || 3000
 
-// use helpers.getUser(req) to replace req.user
-// use helpers.ensureAuthenticated(req) to replace req.isAuthenticated()
 app.engine('hbs', exphbs({
   defaultLayout: 'main',
   extname: 'hbs',
   helpers: require('./_helpers')
 }))
 app.set('view engine', 'hbs')
-app.use(express.static('public')) // setting static files
+app.use(express.static(__dirname + '/public/stylesheets/')) // setting static files
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())

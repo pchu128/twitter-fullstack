@@ -1,0 +1,22 @@
+.nav-box {
+  width: 72px;
+}
+.nav-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.fa-fw {
+  color: transparent;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: black;
+}
+.fa-crow {
+  color: #00acee;
+}
+
+@media screen and (min-width: 992px) {
+  .nav-box {
+    width: 140px;
+  }
+}

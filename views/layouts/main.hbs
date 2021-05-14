@@ -4,68 +4,64 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple-Twitter</title>
+  <title>Twitter</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/9a9a9cf9c6.js" crossorigin="anonymous"></script>
-  <!-- Material Design Bootstrap -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/main.css">
 </head>
 
 <body>
   <main role="main">
 
     <div>
-      <div class="row mx-auto" style="width: 95vw;">
+      <div class="d-flex flex-row" style="width: 100%;">
 
-        <div class="col-3 border-right">
+        <div class="nav-box border-right">
           <div class="vertical-nav bg-white" id="sidebar">
             <div class="py-4 px-3 mb-2 ml-0">
               <div class="media d-flex align-items-center">
-                <img src="https://i.imgur.com/5wAep0e.png" style="width:50px; height:50px; margin-right:10px;">
-                <div class="media-body">
-                  <h5 class="m-0">Simple-Twitter</h5>
-                  <p class="font-weight-light text-muted mb-0">ALPHA Camp</p>
-                </div>
+                <i class="fas fa-crow fa-2x"></i>
               </div>
             </div>
 
             <ul class="nav flex-column bg-white mb-0">
               <li class="nav-item">
                 <a href="/tweets" class="nav-link text-dark">
-                  <i class="fas fa-home mr-3 text-primary fa-fw"></i>
-                  首頁
+                  <i class="fas fa-home fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Home</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/users/{{user.id}}/tweets" class="nav-link text-dark">
-                  <i class="fas fa-user mr-3 text-primary fa-fw"></i>
-                  個人資料
+                  <i class="fas fa-user fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Profile</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/chatroom" class="nav-link text-dark">
-                  <i class="fas fa-comments mr-3 text-primary fa-fw"></i>
-                  公開聊天室
+                  <i class="fas fa-comments fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Chat</span>
                 </a>
               </li>
 
               <li class="nav-item">
                 <a href="/setting/{{user.id}}" class="nav-link text-dark">
-                  <i class="fas fa-cog mr-3 text-primary fa-fw"></i>
-                  設定
+                  <i class="fas fa-cog fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Setting</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <button style="border-radius: 100px;" type="button" class="btn btn-primary btn-block"
-                    data-toggle="modal" data-target="#exampleModal">推文</button>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#exampleModal">
+                  <i class="fas fa-feather-alt fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Tweets</span>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="/signout" class="nav-link text-dark">
-                  <i class="fas fa-sign-out-alt mr-3 text-primary fa-fw"></i>
-                  登出
+                  <i class="fas fa-sign-out-alt fa-fw fa-2x"></i>
+                  <span class="d-none d-lg-block ml-2">Log Out</span>
                 </a>
               </li>
             </ul>
@@ -79,7 +75,7 @@
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">有甚麼新鮮事</h5>
+                  <h5 class="modal-title" id="exampleModalLabel">What's new?</h5>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
@@ -88,7 +84,7 @@
                   <img style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
                     src="{{user.avatar}}" />
                   <input class="form-control border-0" type="text" name="description" id="description"
-                    placeholder="有甚麼新鮮事" style="width: 400px;display: inline;border-radius: 100px;"></input>
+                    placeholder="What's new?" style="width: 400px;display: inline;border-radius: 100px;"></input>
                 </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary" style="border-radius: 100px">推文</button>
@@ -120,7 +116,7 @@
         </div>
 
         {{!-- Top 10 user list --}}
-        <div class="col-3 md-4">
+        <div class="col-3 md-4 d-none d-lg-block">
           <ul class="list-group">
             <li class="list-group-item">跟隨誰</li>
             {{#each users}}
@@ -139,12 +135,12 @@
                   {{#if this.isFollowed }}
                   <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
                     <button type="submit" class="btn btn-primary"
-                      style="font-size:12px; margin:0px; padding:1px;">正在跟隨</button>
+                      style="font-size:12px; margin:0px; padding:1px;">Following</button>
                   </form>
                   {{else}}
                   <form action="/followships" method="POST" style="display: contents;">
                     <button type="submit" class="btn btn-outline-primary" name="id" value="{{this.id}}"
-                      style="font-size:12px; margin:0px; padding:1px;">跟隨</button></form>
+                      style="font-size:12px; margin:0px; padding:1px;">Follow</button></form>
                   {{/if}}
                   {{/ifNotCond}}
                 </div>
@@ -152,7 +148,7 @@
             </li>
             {{/each}}
             <li class="list-group-item">
-              <a class="link" href="/users/{{user.id}}/followers">顯示更多</a>
+              <a class="link" href="/users/{{user.id}}/followers">Show more</a>
             </li>
           </ul>
         </div>
@@ -168,12 +164,7 @@
   integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
   integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-{{!-- -- JQuery --> --}}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
-
-
-
 
 </html>
