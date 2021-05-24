@@ -15,7 +15,15 @@
   color: #00acee;
 }
 
+.content-body {
+  max-width: 576px;
+}
+
 @media screen and (min-width: 992px) {
+  
+}
+
+@media screen and (min-width: 1200px) {
   .nav-box {
     width: 140px;
   }

@@ -23,7 +23,7 @@ app.engine('hbs', exphbs({
   helpers: require('./_helpers')
 }))
 app.set('view engine', 'hbs')
-app.use(express.static(__dirname + '/public/stylesheets/')) // setting static files
+app.use(express.static(__dirname + '/public/stylesheets/'))
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }))
 app.use(passport.initialize())
@@ -38,12 +38,10 @@ app.use((req, res, next) => {
 })
 app.use(methodOverride('_method'))
 
-// app.listen(port, () => console.log(`App listening on port ${port}!`))
 server.listen(port, () => {
   console.log(`The app is listening on port ${port}`)
 })
 
-//socket.io
 io.on('connection', async (socket) => {
   console.log('a user connected');
 
