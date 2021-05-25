@@ -80,13 +80,13 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <img style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
+                  <img style="width: 50px; height: 50px; left: 393px; top: 63px; border-radius: 50%; margin-right: 8px;"
                     src="{{user.avatar}}" />
                   <input class="form-control border-0" type="text" name="description" id="description"
-                    placeholder="What's new?" style="width: 400px;display: inline;border-radius: 100px;"></input>
+                    placeholder="What's new?" style="width: 400px; display: inline; border-radius: 100px;"></input>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" style="border-radius: 100px">推文</button>
+                  <button type="submit" class="btn btn-primary" style="border-radius: 100px;">推文</button>
                 </div>
               </div>
             </div>
@@ -95,7 +95,7 @@
 
         <div class="content-body">
           {{#if success_messages}}
-          <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 30px 0 ;">
+          <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin: 30px 0;">
             {{success_messages}}
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">&times;</span>
@@ -117,13 +117,13 @@
         {{!-- Top 10 user list --}}
         <div class="d-none d-lg-block ml-3 mt-3">
           <ul class="list-group">
-            <li class="list-group-item border-left-0 border-top-0 border-right-0" style="border-radius:20px 20px 0 0; font-size: 20px; font-weight:900; background-color: #f7f9fa;">Who to follow</li>
+            <li class="list-group-item border-left-0 border-top-0 border-right-0" style="border-radius: 20px 20px 0 0; font-size: 20px; font-weight:900; background-color: #f7f9fa;">Who to follow</li>
             {{#each users}}
             <li class="list-group-item border-left-0 border-right-0" style="background-color: #f7f9fa;">
               <div class="d-flex">
                 <div class="avatar">
                   <a href="/users/{{this.id}}/tweets">
-                    <img class="rounded-circle" style="width:50px; height: 50px;" src="{{this.avatar}}" />
+                    <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.avatar}}" />
                   </a>
                 </div>
                 <div class="user-info d-flex flex-column ml-3">
@@ -136,13 +136,13 @@
                   <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
                     <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}"
                       style="
-                        width:76px;
-                        height:32px;
-                        border-radius:30px; 
-                        font-size:13px;
-                        font-weight:800;
-                        border:1px solid #00acee; 
-                        color:#00acee;
+                        width: 76px;
+                        height: 32px;
+                        border-radius: 30px; 
+                        font-size: 13px;
+                        font-weight: 800;
+                        border: 1px solid #00acee; 
+                        color: #00acee;
                         background-color: #f7f9fa;
                         text-transform: none;"
                         >Following
@@ -152,13 +152,13 @@
                   <form action="/followships" method="POST" style="display: contents;">
                     <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}"
                       style="
-                        width:76px;
-                        height:32px;
-                        border-radius:30px; 
-                        font-size:13px;
-                        font-weight:800;
-                        border:1px solid #00acee;
-                        color:#00acee;
+                        width: 76px;
+                        height: 32px;
+                        border-radius: 30px; 
+                        font-size: 13px;
+                        font-weight: 800;
+                        border: 1px solid #00acee;
+                        color: #00acee;
                         background-color: #f7f9fa;
                         text-transform: none;"
                         >Follow

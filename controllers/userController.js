@@ -111,7 +111,6 @@ const userController = {
   },
 
   getUser: (req, res) => {
-    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [
@@ -132,36 +131,29 @@ const userController = {
           ],
           where: { role: null }
         }).then(users => {
-          // 整理 users 資料
           users = users.map(user => ({
             ...user.dataValues,
-            //計算追蹤者人數
             FollowerCount: user.Followers.length,
-            // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          // 依追蹤者人數排序清單
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          //整理 user資料
           user = user.toJSON()
-          //依推文時間排序user tweets
+          let month = user.createdAt.toLocaleString('en-US', {month: 'short'})
+          let year = user.createdAt.getFullYear()
           let tweets = user.Tweets
           tweets = tweets.sort((a, b) => b.createdAt - a.createdAt)
-          //確認get user page是否為跟隨中使用者
           function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
           let loginUserisFollowed = users.find(findIsFollowed).isFollowed
 
-          return res.render('profile', { user, users, loginUserId, loginUserisFollowed, tweets: tweets })
+          return res.render('profile', { user, month, year, users, loginUserId, loginUserisFollowed, tweets: tweets })
         })
       })
   },
 
   editUser: (req, res) => {
-    //only login user can enter edit profile page
     if (helpers.getUser(req).id !== Number(req.params.id)) { return res.redirect('back') }
     return User.findByPk(req.params.id)
       .then(user => {
-        //抓取Topuser清單
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
