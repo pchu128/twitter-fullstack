@@ -117,7 +117,9 @@
         {{!-- Top 10 user list --}}
         <div class="d-none d-lg-block ml-3 mt-3">
           <ul class="list-group">
-            <li class="list-group-item border-left-0 border-top-0 border-right-0" style="border-radius: 20px 20px 0 0; font-size: 20px; font-weight:900; background-color: #f7f9fa;">Who to follow</li>
+            <li class="list-group-item border-left-0 border-top-0 border-right-0"
+              style="border-radius: 20px 20px 0 0; font-size: 20px; font-weight:900; background-color: #f7f9fa;">Who to
+              follow</li>
             {{#each users}}
             <li class="list-group-item border-left-0 border-right-0" style="background-color: #f7f9fa;">
               <div class="d-flex">
@@ -134,34 +136,30 @@
                   {{#ifNotCond ../loginUserId this.id}}
                   {{#if this.isFollowed }}
                   <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
-                    <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}"
-                      style="
+                    <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}" style="
                         width: 76px;
                         height: 32px;
                         border-radius: 30px; 
                         font-size: 13px;
                         font-weight: 800;
-                        border: 1px solid #00acee; 
-                        color: #00acee;
+                        border: 1px solid #1DA1F2; 
+                        color: #1DA1F2;
                         background-color: #f7f9fa;
-                        text-transform: none;"
-                        >Following
+                        text-transform: none;">Following
                     </button>
                   </form>
                   {{else}}
                   <form action="/followships" method="POST" style="display: contents;">
-                    <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}"
-                      style="
+                    <button type="submit" class="btn shadow-none p-0" name="id" value="{{this.id}}" style="
                         width: 76px;
                         height: 32px;
                         border-radius: 30px; 
                         font-size: 13px;
                         font-weight: 800;
-                        border: 1px solid #00acee;
-                        color: #00acee;
+                        border: 1px solid #1DA1F2;
+                        color: #1DA1F2;
                         background-color: #f7f9fa;
-                        text-transform: none;"
-                        >Follow
+                        text-transform: none;">Follow
                     </button>
                   </form>
                   {{/if}}
@@ -170,8 +168,9 @@
               </div>
             </li>
             {{/each}}
-            <li class="list-group-item border-left-0 border-bottom-0 border-right-0" style="border-radius: 0 0 20px 20px; background-color: #f7f9fa;">
-              <a class="link" style="color:#00acee;" href="/users/{{user.id}}/followers">Show more</a>
+            <li class="list-group-item border-left-0 border-bottom-0 border-right-0"
+              style="border-radius: 0 0 20px 20px; background-color: #f7f9fa;">
+              <a class="link" style="color:#1DA1F2;" href="/users/{{user.id}}/followers">Show more</a>
             </li>
           </ul>
         </div>

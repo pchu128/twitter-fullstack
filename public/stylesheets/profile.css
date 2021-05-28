@@ -6,13 +6,13 @@
   border-radius: 30px;
   font-size: 14px;
   font-weight: 800;
-  border: 1px solid #00acee;
-  color: #00acee;
+  border: 1px solid #1DA1F2;
+  color: #1DA1F2;
   background-color: #f7f9fa;
   text-transform: none;
 }
 
-.font-sm {
+.font-light {
   font-size: 15px;
   font-weight: lighter;
   opacity: 0.8;
