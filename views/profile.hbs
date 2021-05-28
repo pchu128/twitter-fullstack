@@ -69,8 +69,7 @@
     </ul>
 
     <div class="favorite">
-      <ul class="list-group">
-        {{#each tweets}}
+      {{#each tweets}}
         <div class="tweet-container d-flex mt-2 border-bottom" style="cursor: pointer;"
           onclick="window.location='/tweets/{{this.id}}';">
           <div class="user">
@@ -112,8 +111,7 @@
             </div>
           </div>
         </div>
-        {{/each}}
-      </ul>
+      {{/each}}
     </div>
   </div>
 </div>

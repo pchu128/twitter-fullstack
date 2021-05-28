@@ -144,7 +144,6 @@ const userController = {
           tweets = tweets.sort((a, b) => b.createdAt - a.createdAt)
           function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
           let loginUserisFollowed = users.find(findIsFollowed).isFollowed
-
           return res.render('profile', { user, month, year, users, loginUserId, loginUserisFollowed, tweets: tweets })
         })
       })
@@ -423,7 +422,6 @@ const userController = {
   },
 
   getUserReplies: (req, res) => {
-    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [
@@ -433,14 +431,17 @@ const userController = {
           model: Reply,
           where: { UserId: req.params.id },
           include: [{ model: Tweet, include: [User, Reply, { model: User, as: 'LikedUsers' }] }]
-        }
+        },
+        {
+          model: Tweet,
+          where: { UserId: req.params.id },
+        },
       ],
       order: [
         [Reply, 'createdAt', 'DESC']
       ]
     })
       .then(user => {
-        //抓取Topuser清單
         return User.findAll({
           include: [
             { model: User, as: 'Followers' }
@@ -452,17 +453,15 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          // 依追蹤者人數排序清單(TopUser清單結尾)
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-
-          //整理 user & replies資料
           user = user.toJSON()
           let replies = user.Replies
-          //確認get user page是否為跟隨中使用者
+          let tweets = user.Tweets
+          let month = user.createdAt.toLocaleString('en-US', { month: 'short' })
+          let year = user.createdAt.getFullYear()
           function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
           let loginUserisFollowed = users.find(findIsFollowed).isFollowed
-
-          return res.render('userReplies', { user, users, loginUserId, loginUserisFollowed, replies })
+          return res.render('userReplies', { user, users, tweets, month, year, loginUserId, loginUserisFollowed, replies })
 
         })
       })
