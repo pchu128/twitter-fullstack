@@ -15,14 +15,24 @@
 <body>
   <main role="main">
     <div class="mt-4">
-      <div class="content-container d-flex justify-content-center">
+      <div class="content-container d-flex flex-column align-items-center">
 
         {{#if success_messages}}
-          <div class="alert alert-success" role="alert" style="margin: 30px 0 ;">{{success_messages}}</div>
+          <div class="alert alert-success alert-dismissible fade show" role="alert" style="width: 350px;">
+            {{success_messages}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         {{/if}}
 
         {{#if error_messages}}
-          <div class="alert alert-danger" role="alert" style="margin: 30px 0 ;">{{error_messages}}</div>
+          <div class="alert alert-danger alert-dismissible fade show" role="alert" style="width: 350px;">
+            {{error_messages}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
         {{/if}}
 
         {{{body}}}
