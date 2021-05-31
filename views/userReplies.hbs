@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/profile.css">
+<link rel="stylesheet" href="/button.css">
 
 <div class="profile-container border-right border-left">
   <div class="nav-top d-flex align-items-center" style="height: 50px;">
@@ -33,8 +33,7 @@
         </form>
         {{else}}
         <form action="/followships/" method="POST" style="display: contents;">
-          <button type="submit" class="btn shadow-none p-0 d-flex button-cyan" name="id"
-            value="{{user.id}}">Follow</button>
+          <button type="submit" class="btn shadow-none p-0 d-flex button-cyan" name="id" value="{{user.id}}">Follow</button>
         </form>
         {{/if}}
         {{/ifNotCond}}
@@ -68,97 +67,94 @@
         <a class="nav-link" href="/users/{{user.id}}/likes">Likes</a>
       </li>
     </ul>
+  </div>
 
-    <div class="favorite">
-      {{#each replies}}
-        <div class="tweet-container d-flex mt-2 border-bottom" style="cursor: pointer;"
-          onclick="window.location='/tweets/{{this.Tweet.id}}';">
-          <div class="user">
-            <a class="mt-2 ml-3" href="/users/{{this.Tweet.User.id}}/tweets">
-              <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.Tweet.User.avatar}}" />
-            </a>
+  <div class="favorite">
+    {{#each replies}}
+      <div class="tweet-container d-flex mt-2 border-bottom" style="cursor: pointer;"
+        onclick="window.location='/tweets/{{this.Tweet.id}}';">
+        <div class="user">
+          <a class="mt-2 ml-3" href="/users/{{this.Tweet.User.id}}/tweets">
+            <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.Tweet.User.avatar}}" />
+          </a>
+        </div>
+        <div class="content-container d-flex flex-column ml-3">
+          <div class="user-info d-flex align-items-baseline">
+            <p class="font-weight-bold m-0">{{this.Tweet.User.name}}</p>
+            <small class="text-muted ml-1">{{this.Tweet.User.account}} • {{moment this.createdAt}}</small>
           </div>
-          <div class="content-container d-flex flex-column ml-3">
-            <div class="user-info d-flex align-items-baseline">
-              <p class="font-weight-bold m-0">{{this.Tweet.User.name}}</p>
-              <small class="text-muted ml-1">{{this.Tweet.User.account}} • {{moment this.createdAt}}</small>
+          <div class="text">
+            <div class="text-break">
+              <p class="card-text" style="font-size: 15px;">{{this.Tweet.description}}</p>
             </div>
-            <div class="text">
-              <div class="text-break">
-                <p class="card-text" style="font-size: 15px;">{{this.Tweet.description}}</p>
-              </div>
+          </div>
+          <div class="tweet-nav d-flex my-2 ml-1">
+            <div class="icon-comment flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-comment fa-lg"> {{this.Tweet.Replies.length}}</i>
+              </small>
             </div>
-            <div class="tweet-nav d-flex my-2 ml-1">
-              <div class="icon-comment flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-comment fa-lg"> {{this.Tweet.Replies.length}}</i>
-                </small>
-              </div>
-              <div class="icon-retweet flex-grow-1">
-                <small class="text-muted">
-                  <i class="fas fa-retweet fa-lg"> 0</i>
-                </small>
-              </div>
-              <div class="icon-heart flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-heart fa-lg" style="color: red;"> {{this.Tweet.LikedUsers.length}}</i>
-                </small>
-              </div>
-              <div class="icon-share flex-grow-1">
-                <small class="text-muted">
-                  <i class="fas fa-share-square fa-lg"> 0</i>
-                </small>
-              </div>
+            <div class="icon-retweet flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-retweet fa-lg"> 0</i>
+              </small>
+            </div>
+            <div class="icon-heart flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-heart fa-lg" style="color: red;"> {{this.Tweet.LikedUsers.length}}</i>
+              </small>
+            </div>
+            <div class="icon-share flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-share-square fa-lg"> 0</i>
+              </small>
             </div>
           </div>
         </div>
+      </div>
 
-        <div class="comment-container d-flex mt-2 border-bottom">
-          <div class="user">
-            <a class="mt-2 ml-3" href="/users/{{../user.id}}/tweets">
-              <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{../user.avatar}}" />
-            </a>
+      <div class="comment-container d-flex mt-2 border-bottom">
+        <div class="user">
+          <a class="mt-2 ml-3" href="/users/{{../user.id}}/tweets">
+            <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{../user.avatar}}" />
+          </a>
+        </div>
+        <div class="content-container d-flex flex-column ml-3">
+          <div class="user-info d-flex align-items-baseline">
+            <p class="font-weight-bold m-0">{{../user.name}}</p>
+            <small class="text-muted ml-1">{{../user.account}} • {{moment this.createdAt}}</small>
           </div>
-          <div class="content-container d-flex flex-column ml-3">
-            <div class="user-info d-flex align-items-baseline">
-              <p class="font-weight-bold m-0">{{../user.name}}</p>
-              <small class="text-muted ml-1">{{../user.account}} • {{moment this.createdAt}}</small>
+          <div class="text">
+            <div class="text-break">
+              <p class="text-muted mt-1 mb-0" style="font-size: 15px;">Replying to {{this.Tweet.User.account}}</p>
+              <p class="card-text" style="font-size: 15px;">{{this.comment}}</p>
             </div>
-            <div class="text">
-              <div class="text-break">
-                <p class="text-muted mt-1 mb-0" style="font-size: 15px;">Replying to {{this.Tweet.User.account}}</p>
-                <p class="card-text" style="font-size: 15px;">{{this.comment}}</p>
-              </div>
-            </div>
+          </div>
 
-            <div class="tweet-nav d-flex my-2 ml-1">
-              <div class="icon-comment flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-comment fa-lg"> {{this.Replies.length}}</i>
-                </small>
-              </div>
-              <div class="icon-retweet flex-grow-1">
-                <small class="text-muted">
-                  <i class="fas fa-retweet fa-lg"> 0</i>
-                </small>
-              </div>
-              <div class="icon-heart flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-heart fa-lg" style="color: red;"> {{this.LikedUsers.length}}</i>
-                </small>
-              </div>
-              <div class="icon-share flex-grow-1">
-                <small class="text-muted">
-                  <i class="fas fa-share-square fa-lg"> 0</i>
-                </small>
-              </div>
+          <div class="tweet-nav d-flex my-2 ml-1">
+            <div class="icon-comment flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-comment fa-lg"> {{this.Replies.length}}</i>
+              </small>
+            </div>
+            <div class="icon-retweet flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-retweet fa-lg"> 0</i>
+              </small>
+            </div>
+            <div class="icon-heart flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-heart fa-lg" style="color: red;"> {{this.LikedUsers.length}}</i>
+              </small>
+            </div>
+            <div class="icon-share flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-share-square fa-lg"> 0</i>
+              </small>
             </div>
           </div>
         </div>
-      {{/each}}
-    </div>
+      </div>
+    {{/each}}
   </div>
 </div>
-
-
-

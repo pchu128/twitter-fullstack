@@ -1,105 +1,118 @@
-<div class="row border-right">
-  <div class="col mt-2">
-    <div class="row row-cols-1">
-      <div class="col">
-        <a href="">
-          <h5 class="ml-2"><i class="fas fa-long-arrow-alt-left"></i>
-        </a>
-        &nbsp;{{user.name}}</h5>
-        <small class="ml-2">&emsp;&emsp;{{tweets.length}} 推文</small>
+<link rel="stylesheet" href="/button.css">
+
+<div class="profile-container border-right border-left">
+  <div class="nav-top d-flex align-items-center" style="height: 50px;">
+    <a href="/tweets"> <i class="ml-4 mr-2 fas fa-long-arrow-alt-left"></i></a>
+    <div class="name ml-4 d-flex flex-column">
+      <h5 class="m-0" style="font-weight: 900;">{{user.name}}</h5>
+      <small class="text-muted">{{tweets.length}} Tweets</small>
+    </div>
+  </div>
+
+  <div class="profile-background">
+    <img src="{{user.cover}}" style="width: 100%; height: 33vw; max-height: 200px; object-fit: cover;">
+  </div>
+
+  <div class="profile-info-container">
+    <div class="profile-info d-flex flex-row justify-content-between">
+      <div class="avatar ml-3">
+        <img class="rounded-circle" src="{{user.avatar}}"
+          style="width: 20vw; max-width: 140px; margin-top:-60px; border: 0.6vw solid white;">
       </div>
 
-      <br />
-      <div class="" style="">
-        <img class="rounded-top" src="{{user.cover}}" style="width:100%; height: 200px;">
+      <div class="profile-button mr-3">
+        {{#ifCond user.id loginUserId}}
+        <a class="btn shadow-none p-0 d-flex button-cyan" href="/users/{{user.id}}/edit">Set up profile</a>
+        {{/ifCond}}
+
+        {{#ifNotCond loginUserId user.id}}
+
+        {{#if loginUserisFollowed }}
+        <form action="/followships/{{user.id}}?_method=DELETE" method="POST" style="display: contents;">
+          <button type="submit" class="btn shadow-none p-0 d-flex button-cyan">Following</button>
+        </form>
+        {{else}}
+        <form action="/followships/" method="POST" style="display: contents;">
+          <button type="submit" class="btn shadow-none p-0 d-flex button-cyan" name="id"
+            value="{{user.id}}">Follow</button>
+        </form>
+        {{/if}}
+        {{/ifNotCond}}
       </div>
-      <div class="col">
-        <div class="row">
-          <div class="col ">
-            <img class="rounded-circle" src="{{user.avatar}}" style="width:50%; margin-top:-60px;">
-          </div>
-          <div class="col d-flex align-items-center">
-            {{#ifCond user.id loginUserId}}
-            <a class="btn btn-primary" href="/users/{{user.id}}/edit">
-              編輯個人資料
-            </a>
-            {{/ifCond}}
-            {{!-- followship button --}}
-            {{#ifNotCond loginUserId user.id}}
-            {{#if loginUserisFollowed }}
-            <form action="/followships/{{user.id}}?_method=DELETE" method="POST" style="display: contents;"><button
-                type="submit" class="btn btn-primary" style="font-size:1px; margin:0px; padding:1px;">正在跟隨</button>
-            </form>
-            {{else}}
-            <form action="/followships/" method="POST" style="display: contents;"><button type="submit"
-                class="btn btn-outline-primary" name="id" value="{{user.id}}" style="font-size:1px; margin:0px; padding:1px;">跟隨</button></form>
-            {{/if}}
-            {{/ifNotCond}}
+    </div>
+
+    <div class="profile-intro ml-3 mt-2">
+      <h5 class="m-0" style="font-weight: 900;">{{user.name}}</h5>
+      <p class="text-muted font-light mb-2">{{user.email}}</p>
+      <p class="mb-2" style="font-size: 15px;">{{user.introduction}}</p>
+      <p class="text-muted font-light mb-2"> <i class="far fa-calendar-alt"></i> Joined {{month}} {{year}}</p>
+      <p style="font-size: 15px; font-weight:bold;">
+        {{user.Followings.length}}<span class="text-muted font-light mr-3"> Following</span>
+        {{user.Followers.length}}<span class="text-muted font-light"> Followers</span>
+      </p>
+    </div>
+  </div>
+
+  <div class="profile-nav">
+    <ul class="nav nav-pills border-bottom d-flex justify-content-around">
+      <li class="nav-item">
+        <a class="nav-link" href="/users/{{user.id}}/tweets">Tweets</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/{{user.id}}/replies">Tweets & replies</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/users/{{user.id}}/likes">Media</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/users/{{user.id}}/likes">Likes</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="favorite">
+    {{#each likes}}
+    <div class="tweet-container d-flex mt-2 border-bottom" style="cursor: pointer;"
+      onclick="window.location='/tweets/{{this.id}}';">
+      <div class="user">
+        <a class="mt-2 ml-3" href="/users/{{this.UserId}}/tweets">
+          <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.User.avatar}}" />
+        </a>
+      </div>
+      <div class="content-container d-flex flex-column ml-3">
+        <div class="user-info d-flex align-items-baseline">
+          <p class="font-weight-bold m-0">{{this.User.name}}</p>
+          <small class="text-muted ml-1">{{this.User.account}} • {{moment this.createdAt}}</small>
+        </div>
+        <div class="text">
+          <div class="text-break">
+            <p class="card-text" style="font-size: 15px;">{{this.description}}</p>
           </div>
         </div>
-        <h5>{{user.name}}</h5>
-        <small>{{user.email}}</small>
-        <p>{{user.introduction}}</p>
-        <p>{{user.Followings.length}}個跟隨中 {{user.Followers.length}}位跟隨者</p>
-      </div>
-
-      {{!-- Profile Nav --}}
-      <div class="col">
-        <ul class="nav nav-tabs bt-4">
-          <li class="nav-item">
-            <a class="nav-link" href="/users/{{user.id}}/tweets">推文</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/users/{{user.id}}/replies">推文與回覆</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" href="/users/{{user.id}}/likes">喜歡的內容</a>
-          </li>
-        </ul>
-        <br />
-        <br />
-        {{!-- render 喜愛的內容 --}}
-        <div class="row">
-          <ul class="list-group">
-            {{#each likes}}
-            <li class="list-group-item">
-              <div class="border-top">
-                <h6 class="card-title">
-                  <a href="/users/{{this.UserId}}/tweets">
-                    <img class="mt-2"
-                      style="width: 50px;height: 50px;left: 393px;top: 63px;border-radius: 50%;margin-right: 8px;"
-                      src="{{this.User.avatar}}" />
-                    {{this.User.name}}
-                  </a>
-                  <small class="text-muted">{{this.User.account}}◆{{moment this.createdAt}}</small>
-                </h6>
-              </div>
-              <div class="text-break" style="display: inline;">
-                <a href="/tweets/{{this.id}}">
-                  <p class="card-text">{{this.description}}</p>
-                </a>
-                <p class="card-text">
-                <div class="row justify-content-around">
-                  <div class="col">
-                    <small class="text-muted">
-                      <i class="far fa-comment"> {{this.Replies.length}}</i>
-                    </small>
-                  </div>
-                  <div class="col">
-                    <small class="text-muted">
-                      <i class="far fa-heart" style="color: red;"> {{this.LikedUsers.length}}</i>
-                    </small>
-                  </div>
-                </div>
-                </p>
-              </div>
-            </li>
-            {{/each}}
-          </ul>
+        <div class="tweet-nav d-flex my-2 ml-1">
+          <div class="icon-comment flex-grow-1">
+            <small class="text-muted">
+              <i class="far fa-comment fa-lg"> {{this.Replies.length}}</i>
+            </small>
+          </div>
+          <div class="icon-retweet flex-grow-1">
+            <small class="text-muted">
+              <i class="fas fa-retweet fa-lg"> 0</i>
+            </small>
+          </div>
+          <div class="icon-heart flex-grow-1">
+            <small class="text-muted">
+              <i class="far fa-heart fa-lg" style="color: red;"> {{this.LikedUsers.length}}</i>
+            </small>
+          </div>
+          <div class="icon-share flex-grow-1">
+            <small class="text-muted">
+              <i class="fas fa-share-square fa-lg"> 0</i>
+            </small>
+          </div>
         </div>
       </div>
     </div>
+    {{/each}}
   </div>
 </div>
-<br />
-<br />
