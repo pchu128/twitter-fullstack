@@ -10,6 +10,7 @@
     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/main.css">
+  <link rel="stylesheet" href="/button.css">
 </head>
 
 <body class="d-flex justify-content-center">
@@ -36,12 +37,6 @@
                 <a href="/users/{{user.id}}/tweets" class="nav-link text-dark">
                   <i class="fas fa-user fa-fw fa-lg"></i>
                   <span class="d-none d-xl-block ml-2">Profile</span>
-                </a>
-              </li>
-              <li class="nav-item mb-3">
-                <a href="/chatroom" class="nav-link text-dark">
-                  <i class="fas fa-comments fa-fw fa-lg"></i>
-                  <span class="d-none d-xl-block ml-2">Chat</span>
                 </a>
               </li>
 
@@ -86,7 +81,7 @@
                     placeholder="What's new?" style="width: 400px; display: inline; border-radius: 100px;"></input>
                 </div>
                 <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary" style="border-radius: 100px;">推文</button>
+                  <button type="submit" class="btn p-0 button-cyan" style="width: 100px;">Tweet</button>
                 </div>
               </div>
             </div>

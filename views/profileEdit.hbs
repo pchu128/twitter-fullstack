@@ -1,25 +1,39 @@
-<form action="/users/{{user.id}}/edit" method="POST" enctype="multipart/form-data">
+<div class="d-flex justify-content-center border-right border-left border-bottom rounded-bottom p-4" style="width: 576px;">
+  <form action="/users/{{user.id}}/edit" method="POST" enctype="multipart/form-data" style="width: 500px;">
+    <div class="form-group text-muted">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{user.name}}">
+    </div>
 
-  <div class="form-group">
-    <label for="name">Name</label>
-    <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{user.name}}">
-  </div>
+    <div class="form-group text-muted">
+      <label for="introduction" class="">Introduction</label>
+      <textarea type="text" class="form-control" style="min-height: 150px;" name="introduction" id="introduction"
+        placeholder="Enter introduction">{{user.introduction}}</textarea>
+    </div>
 
-  <div class="form-group">
-    <label for="introduction">Introduction</label>
-    <textarea type="text" class="form-control" name="introduction" id="introduction"
-      placeholder="Enter introduction">{{user.introduction}}</textarea>
-  </div>
+    <div class="form-group text-muted">
+      <label for="avatar">Avatar</label>
+      <input type="file" class="form-control-file" id="avatar" name="avatar">
+    </div>
 
-  <div class="form-group">
-    <label for="avatar">Avatar</label>
-    <input type="file" class="form-control-file" id="avatar" name="avatar">
-  </div>
+    <div class="form-group text-muted">
+      <label for="cover">Cover</label>
+      <input type="file" class="form-control-file" id="cover" name="cover">
+    </div>
 
-  <div class="form-group">
-    <label for="cover">Cover</label>
-    <input type="file" class="form-control-file" id="cover" name="cover">
-  </div>
-
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <button type="submit" class="btn p-0" style="
+      justify-content: center;
+      align-items: center;
+      width: 130px;
+      height: 40px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: 800;
+      border: 1px solid #1DA1F2;
+      color: #1DA1F2;
+      background-color: #f7f9fa;
+      text-transform: none;"
+      >Submit
+    </button>
+  </form>
+</div>

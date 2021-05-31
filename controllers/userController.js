@@ -164,7 +164,7 @@ const userController = {
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
           users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-          return res.render('profileEdit', { user: user.toJSON(), users })
+          return res.render('profileEdit', { user: user.toJSON(), users },)
         })
       })
 
