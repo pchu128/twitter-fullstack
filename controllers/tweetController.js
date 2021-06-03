@@ -44,11 +44,11 @@ const tweetController = {
 
   postTweet: (req, res) => {
     if (!req.body.description) {
-      req.flash('error_messages', '請勿空白')
+      req.flash('error_messages', "Oops. It seems that you haven't typed anything.")
       return res.redirect('back')
     }
     if (req.body.description.length > 140) {
-      req.flash('error_messages', '超過字數140')
+      req.flash('error_messages', 'Sorry, a tweet cannot exceed 140 characters.')
       return res.redirect('back')
     } else {
       return Tweet.create({

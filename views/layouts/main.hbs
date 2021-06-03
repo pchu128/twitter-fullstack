@@ -22,7 +22,9 @@
           <div class="vertical-nav bg-white position-fixed" id="sidebar">
             <div class="py-4 px-3 mb-3 ml-0">
               <div class="media d-flex align-items-center">
-                <i class="fas fa-crow fa-lg"></i>
+                <a href="/tweets">
+                  <i class="fas fa-crow fa-lg"></i>
+                </a>
               </div>
             </div>
 
@@ -110,7 +112,7 @@
         </div>
 
         {{!-- Top 10 user list --}}
-        <div class="d-none d-lg-block ml-3 mt-3">
+        <div class="d-none d-lg-block ml-3 mt-3" style="width: 288px;">
           <ul class="list-group">
             <li class="list-group-item border-left-0 border-top-0 border-right-0"
               style="border-radius: 20px 20px 0 0; font-size: 20px; font-weight:900; background-color: #f7f9fa;">Who to follow
@@ -118,15 +120,15 @@
             {{#each users}}
               {{#ifNotCond ../loginUserId this.id}}
                 <li class="list-group-item border-left-0 border-right-0" style="background-color: #f7f9fa;">
-                  <div class="d-flex">
-                    <div class="avatar">
+                  <div class="d-flex justify-content-between">
+                    <div class="user d-flex">
                       <a href="/users/{{this.id}}/tweets">
                         <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.avatar}}" />
                       </a>
-                    </div>
-                    <div class="user-info d-flex flex-column ml-3">
-                      <p class="font-weight-bold m-0">{{this.name}}</p>
-                      <small class="text-muted m-0">{{this.account}}</small>
+                      <div class="user-info d-flex flex-column ml-3">
+                        <p class="font-weight-bold m-0">{{this.name}}</p>
+                        <small class="text-muted m-0">{{this.account}}</small>
+                      </div>
                     </div>
 
                     <div class="button ml-2">

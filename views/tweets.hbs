@@ -13,7 +13,7 @@
             <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{user.avatar}}"/>
           </a>
 
-          <input style="display: inline;" type="text" class="form-control mt-3 border-0 shadow-none"
+          <input style="display: inline;" type="text" autocomplete="off" class="form-control mt-3 border-0 shadow-none"
             placeholder="What's happening?" name="description" id="description" value="{{tweets.description}}">
         </div>
       </div>
@@ -53,18 +53,28 @@
                 <p class="card-text">{{this.description}}</p>
               </div>
             </div>
-            <div class="tweet-nav d-flex my-2 ml-1">
-              <div class="icon-comment flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-comment fa-lg"> {{this.Replies.length}}</i>
-                </small>
-              </div>
-              <div class="icon-heart flex-grow-1">
-                <small class="text-muted">
-                  <i class="far fa-heart fa-lg" style="color: red;"> {{this.LikedUsers.length}}</i>
-                </small>
-              </div>
+          <div class="tweet-nav d-flex my-2 ml-1">
+            <div class="icon-comment flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-comment fa-lg"> {{this.Replies.length}}</i>
+              </small>
             </div>
+            <div class="icon-retweet flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-retweet fa-lg"> 0</i>
+              </small>
+            </div>
+            <div class="icon-heart flex-grow-1">
+              <small class="text-muted">
+                <i class="far fa-heart fa-lg" style="color: red;"> {{this.LikedUsers.length}}</i>
+              </small>
+            </div>
+            <div class="icon-share flex-grow-1">
+              <small class="text-muted">
+                <i class="fas fa-share-square fa-lg"> 0</i>
+              </small>
+            </div>
+          </div>
           </div>
         </div>
       {{/each}}

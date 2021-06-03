@@ -1,5 +1,5 @@
 <div class="d-flex justify-content-center border-right border-left border-bottom rounded-bottom p-4" style="width: 576px;">
-  <form action="/users/{{user.id}}/edit" method="POST" enctype="multipart/form-data" style="width: 500px;">
+  <form action="/api/users/{{user.id}}" method="POST" enctype="multipart/form-data" style="width: 500px;">
     <div class="form-group text-muted">
       <label for="name">Name</label>
       <input type="text" class="form-control" name="name" id="name" placeholder="Enter name" value="{{user.name}}">

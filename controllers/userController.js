@@ -381,6 +381,42 @@ const userController = {
       })
   },
 
+  getMedia: (req, res) => {
+    let loginUserId = helpers.getUser(req).id
+    return User.findByPk(req.params.id, {
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+        { model: Tweet, as: 'LikedTweets', include: [User, Reply, { model: User, as: 'LikedUsers' }] },
+        { model: Tweet, where: { UserId: req.params.id } }
+      ]
+    })
+      .then(user => {
+        return User.findAll({
+          include: [
+            { model: User, as: 'Followers' }
+          ],
+          where: { role: null }
+        }).then(users => {
+          users = users.map(user => ({
+            ...user.dataValues,
+            FollowerCount: user.Followers.length,
+            isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+          }))
+          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          user = user.toJSON()
+          let likes = user.LikedTweets
+          likes = likes.sort((a, b) => b.Like.createdAt - a.Like.createdAt)
+          function findIsFollowed(findUser) { return findUser.id === Number(req.params.id) }
+          let loginUserisFollowed = users.find(findIsFollowed).isFollowed
+          let month = user.createdAt.toLocaleString('en-US', { month: 'short' })
+          let year = user.createdAt.getFullYear()
+          let tweets = user.Tweets
+          return res.render('media', { user, users, month, tweets, year, loginUserId, loginUserisFollowed, likes })
+        })
+      })
+  },
+
   getUserLikes: (req, res) => {
     let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
