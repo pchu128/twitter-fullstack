@@ -291,7 +291,6 @@ const userController = {
   },
 
   getFollowers: (req, res) => {
-    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
       include: [Tweet]
@@ -309,38 +308,31 @@ const userController = {
               raw: true,
               nest: true,
               include: [
-                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
               where: [
-                { id: followerByOrderCreated },
                 { role: null }
               ]
-            }).then((users) => {
-              // 整理 users 資料
-              users = users.map(user => ({
+            }).then((userFound) => {
+              let users = userFound
+              userFound = userFound.map(user => ({
                 ...user,
-                //計算追蹤者人數
                 FollowerCount: user.Followers.length,
-                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followerByOrderCreated = followerByOrderCreated.map(order => {
-                return users.find(user => { return user.id === order })
+                return userFound.find(user => { return user.id === order })
               })
-              return res.render('followers', { user: user, users: followerByOrderCreated, loginUserId })
+              return res.render('followers', { user: user, users: users, usersFollowed: followerByOrderCreated, loginUserId })
             })
           })
       })
-    //return res.render('followers')
   },
 
   getFollowings: (req, res) => {
-    //loginUserId for 判斷編輯資訊頁/跟隨 button鈕是否出現
     let loginUserId = helpers.getUser(req).id
     return User.findByPk(req.params.id, {
-      include: [Tweet]
     })
       .then((user) => {
         return Followship.findAll({
@@ -355,27 +347,23 @@ const userController = {
               raw: true,
               nest: true,
               include: [
-                Tweet,
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
               ],
               where: [
-                { id: followingByOrderCreated },
                 { role: null }
               ]
-            }).then((users) => {
-              // 整理 users 資料
-              users = users.map(user => ({
+            }).then((userFound) => {
+              let users = userFound
+              userFound = userFound.map(user => ({
                 ...user,
-                //計算追蹤者人數
                 FollowerCount: user.Followers.length,
-                // // 判斷目前登入使用者是否已追蹤該 User 物件, passport.js加入 followship以取得helpers.getUser(req).Followings
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followingByOrderCreated = followingByOrderCreated.map(order => {
-                return users.find(user => { return user.id === order })
+                return userFound.find(user => { return user.id === order })
               })
-              return res.render('followings', { user: user, users: followingByOrderCreated, loginUserId })
+              return res.render('followings', { user: user, users: users, usersfollowing: followingByOrderCreated, loginUserId })
             })
           })
       })
