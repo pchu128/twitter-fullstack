@@ -21,40 +21,34 @@
   </div>
   
   <div class="tweets-container">
+    <ul class="list-group">
       {{#each usersFollowed}}
-        <div class="tweet d-flex mt-3 border-bottom">
-          <div class="avatar ml-3">
-            <a href="/users/{{this.id}}/tweets">
-              <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.avatar}}" />
-            </a>
-          </div>
-
-          <div class="user d-flex flex-column mx-3 mb-3">
-            <div class="user-btn-box d-flex justify-content-between">
-              <div class="user-info">
-                <h4 class="m-0" style="font-size: 15px; font-weight: bold;">{{this.name}}</h4>
-                <span class="text-muted" style="font-size: 15px;">{{this.account}}</span>
-              </div>
-
-              <div class="follow-btn">
-                {{#ifNotCond ../loginUserId this.id}}
-                {{#if this.isFollowed }}
-                <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit"
-                    class="button-cyan" style="font-size:15px; margin:0px; padding:1px;">following</button>
-                </form>
-                {{else}}
-                <form action="/followships/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
-                    class="button-cyan" style="font-size:15px; margin:0px; padding:1px;">follow</button></form>
-                {{/if}}
-                {{/ifNotCond}}
-              </div>
-            </div>
-            
-            <div class="intro">
-              {{this.introduction}}
-            </div>
+      <div class="following-container d-flex justify-content-between mt-3 mx-0 border-bottom">
+        <div class="user-intro d-flex ml-3">
+          <a href="/users/{{this.id}}/tweets">
+            <img class="rounded-circle" style="width: 50px; height: 50px;" src="{{this.avatar}}" />
+          </a>
+          <div class="user-info ml-3">
+            <h4 class="m-0" style="font-size: 15px; font-weight: bold;">{{this.name}}</h4>
+            <span class="text-muted" style="font-size: 15px;">{{this.account}}</span>
+            <p class="intro">{{this.introduction}}</p>
           </div>
         </div>
+    
+        <div class="follow-btn mr-3">
+          {{#ifNotCond ../loginUserId this.id}}
+          {{#if this.isFollowed }}
+          <form action="/followships/{{this.id}}?_method=DELETE" method="POST" style="display: contents;"><button
+              type="submit" class="button-cyan" style="font-size:15px; margin:0px; padding:1px;">following</button>
+          </form>
+          {{else}}
+          <form action="/followships/{{this.id}}" method="POST" style="display: contents;"><button type="submit"
+              class="button-cyan" style="font-size:15px; margin:0px; padding:1px;">follow</button></form>
+          {{/if}}
+          {{/ifNotCond}}
+        </div>
+      </div>
       {{/each}}
+    </ul>
   </div>
 </div>

@@ -61,11 +61,31 @@ const userController = {
   },
 
   settingPage: (req, res) => {
-    User.findByPk(helpers.getUser(req).id).then(user => {
-      return res.render('setting', {
-        account: user.account,
-        name: user.name,
-        email: user.email
+    let loginUserId = helpers.getUser(req).id
+    return User.findAll({
+      include: [
+        { model: User, as: 'Followings' },
+        { model: User, as: 'Followers' },
+      ],
+      where: [
+        { role: null }
+      ]
+    }).then((users) => {
+      users = users.map(user => ({
+        ...user.dataValues,
+        FollowerCount: user.Followers.length,
+        isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
+      }))
+      users = users.sort((a, b) => a.isFollowed - b.isFollowed)
+      User.findByPk(helpers.getUser(req).id).then(user => {
+        return res.render('setting', {
+          account: user.account,
+          name: user.name,
+          email: user.email,
+          user: user,
+          users: users,
+          loginUserId: loginUserId
+        })
       })
     })
   },
@@ -136,7 +156,7 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           user = user.toJSON()
           let month = user.createdAt.toLocaleString('en-US', {month: 'short'})
           let year = user.createdAt.getFullYear()
@@ -163,7 +183,7 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           return res.render('profileEdit', { user: user.toJSON(), users },)
         })
       })
@@ -259,7 +279,6 @@ const userController = {
   },
 
   addFollowing: (req, res) => {
-    //can not follow self
     if (helpers.getUser(req).id === Number(req.body.id)) {
       req.flash('error_messages', 'You cannot follow yourself.')
       return res.render('tweets')
@@ -274,7 +293,6 @@ const userController = {
   },
 
   removeFollowing: (req, res) => {
-    //can not follow/unfollow self
     if (helpers.getUser(req).id === Number(req.params.userId)) { return res.redirect('back') }
     return Followship.findOne({
       where: {
@@ -305,8 +323,6 @@ const userController = {
           .then((users) => {
             let followerByOrderCreated = users.map(user => user.followerId)
             return User.findAll({
-              raw: true,
-              nest: true,
               include: [
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' },
@@ -315,18 +331,17 @@ const userController = {
                 { role: null }
               ]
             }).then((userFound) => {
-              let users = userFound
-              users = users.map(user => ({
-                ...user,
+              console.log(userFound)
+              let users = userFound.map(user => ({
+                ...user.dataValues,
                 FollowerCount: user.Followers.length,
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followerByOrderCreated = followerByOrderCreated.map(order => {
                 return users.find(user => { return user.id === order })
               })
-              console.log(users)
               users = users.sort((a, b) => a.isFollowed - b.isFollowed)
-              return res.render('followers', { user: user, users: users, usersFollowed: followerByOrderCreated, loginUserId })
+              return res.render('followers', { user: user, users: users, usersFollowed: followerByOrderCreated, loginUserId: loginUserId })
             })
           })
       })
@@ -346,8 +361,6 @@ const userController = {
           .then((users) => {
             let followingByOrderCreated = users.map(user => user.followingId)
             return User.findAll({
-              raw: true,
-              nest: true,
               include: [
                 { model: User, as: 'Followings' },
                 { model: User, as: 'Followers' }
@@ -356,9 +369,8 @@ const userController = {
                 { role: null }
               ]
             }).then((userFound) => {
-              let users = userFound
-              users = users.map(user => ({
-                ...user,
+              let users = userFound.map(user => ({
+                ...user.dataValues,
                 FollowerCount: user.Followers.length,
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
@@ -394,7 +406,7 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           user = user.toJSON()
           let likes = user.LikedTweets
           likes = likes.sort((a, b) => b.Like.createdAt - a.Like.createdAt)
@@ -430,7 +442,7 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           user = user.toJSON()
           let likes = user.LikedTweets
           likes = likes.sort((a, b) => b.Like.createdAt - a.Like.createdAt)
@@ -476,7 +488,7 @@ const userController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           user = user.toJSON()
           let replies = user.Replies
           let tweets = user.Tweets

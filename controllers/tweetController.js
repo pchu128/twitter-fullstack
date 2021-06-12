@@ -25,7 +25,8 @@ const tweetController = {
       }).then(tweets => {
         return User.findAll({
           include: [
-            { model: User, as: 'Followers' }
+            { model: User, as: 'Followings' },
+            { model: User, as: 'Followers' },
           ],
           where: { role: null }
         }).then(users => {
@@ -34,6 +35,7 @@ const tweetController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
+          console.log(users[0].Followings)
           users = users.sort((a, b) => a.isFollowed - b.isFollowed)
           return res.render('tweets', { tweets: tweets, user: helpers.getUser(req), users: users, loginUserId: loginUserId })
         })
@@ -85,7 +87,7 @@ const tweetController = {
             FollowerCount: user.Followers.length,
             isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
           }))
-          users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+          users = users.sort((a, b) => a.FollowerCount - b.FollowerCount)
           return res.render('tweet', { tweet: tweet, isLiked: isLiked, users: users, loginUserId: loginUserId })
         })
       })
