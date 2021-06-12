@@ -5,71 +5,71 @@ const faker = require('faker')
 module.exports = {
   up: (queryInterface, Sequelize) => {
     queryInterface.bulkInsert('Users', [{
-      email: 'user1@example.com',
+      email: 'JonJones@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      account: '@user1',
-      name: 'user1',
+      account: '@JonJones',
+      name: 'Jonathon Jones',
       avatar: faker.image.avatar(),
-      cover: faker.image.abstract(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/859/640/480.jpg?hmac=LG_nPTekTxaqzGYlu7uwMKzIQ_pIthhr5jfaX6CDC-w",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      email: 'user2@example.com',
+        email: 'BeccaChampion@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      account: '@user2',
-      name: 'user2',
+      account: '@BeccaChampion',
+      name: 'Rebecca Champion',
       avatar: faker.image.avatar(),
-      cover: faker.image.cats(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/152/640/480.jpg?hmac=KAZeYcS1ukACBrMTy3E7C62eDLwepK7-u-ha-3Kik_A",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      email: 'user3@example.com',
+      email: 'Dlee@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      account: '@user3',
-      name: 'user3',
+      account: '@Dlee',
+      name: 'David Lee',
       avatar: faker.image.avatar(),
-      cover: faker.image.animals(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/320/640/480.jpg?hmac=qJhF73eHNr8fgzLxwe3cp9dZvNhoWCrKDt45CMMayc0",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      email: 'user4@example.com',
+      email: 'Luna194274@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      account: '@user4',
-      name: 'user4',
+      account: '@Luna194274',
+      name: 'Luna',
       avatar: faker.image.avatar(),
-      cover: faker.image.city(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/264/640/480.jpg?hmac=djn_oJPw8BTnjc64ZGydAYK_E-kf8C7ka6AeBcun1eI",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      email: 'user5@example.com',
+        email: 'JeremyLWong@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
-      account: '@user5',
-      name: 'user5',
+      account: '@JeremyLWong',
+      name: 'Jeremy L. Wang',
       avatar: faker.image.avatar(),
-      cover: faker.image.technics(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/355/640/480.jpg?hmac=ZEB01kUr3WIr1c6_1awdHcevf4f9HnzDqwBpzg_7ipw",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }, {
-      email: 'root@example.com',
+      email: 'admin@example.com',
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       role: 'admin',
-      account: '@root',
-      name: 'root',
+      account: '@admin',
+      name: 'admin',
       avatar: faker.image.avatar(),
-      cover: faker.image.transport(),
-      introduction: faker.lorem.sentences(),
+      cover: "https://i.picsum.photos/id/607/640/480.jpg?hmac=7_yFpsU5nTiwQBHrfihzgcW-3S1cosx1m4zo1-mUZAQ",
+      introduction: faker.name.title(),
       createdAt: new Date(),
       updatedAt: new Date()
     }], {})
     queryInterface.bulkInsert('Tweets',
       Array.from({ length: 50 }).map((_, d) => ({
         UserId: (d % 5) + 1,
-        description: faker.lorem.sentences(),
+        description: faker.lorem.paragraph(),
         createdAt: new Date(),
         updatedAt: new Date()
       }))
@@ -84,9 +84,7 @@ module.exports = {
       }))
     )
   },
-  //  truncate: true -> id 從 1 開始
   down: (queryInterface, Sequelize) => {
-
     queryInterface.bulkDelete('Users', null, { truncate: true })
     queryInterface.bulkDelete('Tweets', null, { truncate: true })
     return queryInterface.bulkDelete('Replies', null, { truncate: true })
