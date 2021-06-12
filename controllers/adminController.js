@@ -9,7 +9,7 @@ const helpers = require('../_helpers')
 const adminController = {
   adminSettingPage: (req, res) => {
     User.findByPk(helpers.getUser(req).id).then(user => {
-      return res.render('setting', {
+      return res.render('./admin/setting', {
         layout: 'admin',
         account: user.account,
         name: user.name,

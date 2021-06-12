@@ -309,21 +309,23 @@ const userController = {
               nest: true,
               include: [
                 { model: User, as: 'Followings' },
-                { model: User, as: 'Followers' }
+                { model: User, as: 'Followers' },
               ],
               where: [
                 { role: null }
               ]
             }).then((userFound) => {
               let users = userFound
-              userFound = userFound.map(user => ({
+              users = users.map(user => ({
                 ...user,
                 FollowerCount: user.Followers.length,
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followerByOrderCreated = followerByOrderCreated.map(order => {
-                return userFound.find(user => { return user.id === order })
+                return users.find(user => { return user.id === order })
               })
+              console.log(users)
+              users = users.sort((a, b) => a.isFollowed - b.isFollowed)
               return res.render('followers', { user: user, users: users, usersFollowed: followerByOrderCreated, loginUserId })
             })
           })
@@ -355,14 +357,15 @@ const userController = {
               ]
             }).then((userFound) => {
               let users = userFound
-              userFound = userFound.map(user => ({
+              users = users.map(user => ({
                 ...user,
                 FollowerCount: user.Followers.length,
                 isFollowed: helpers.getUser(req).Followings.map(d => d.id).includes(user.id)
               }))
               followingByOrderCreated = followingByOrderCreated.map(order => {
-                return userFound.find(user => { return user.id === order })
+                return users.find(user => { return user.id === order })
               })
+              users = users.sort((a, b) => a.isFollowed - b.isFollowed)
               return res.render('followings', { user: user, users: users, usersfollowing: followingByOrderCreated, loginUserId })
             })
           })

@@ -1,31 +1,53 @@
-<form class="form-signin mx-auto" action="/setting/:id" method="POST" style="width: 100%;">
-  <div class="text-center mb-4">
-    <h1 class="h3 mb-3 font-weight-normal">Setting</h1>
-  </div>
-  <div class="form-label-group mb-2">
-    <label for="inputAccount">Account</label>
-    <input type="text" name="account" class="form-control" placeholder="Account" value="{{user.account}}" required
-      autofocus>
-  </div>
-  <div class="form-label-group mb-2">
-    <label for="inputEmail">Email</label>
-    <input type="text" name="email" class="form-control" placeholder="Email" value="{{user.email}}" required autofocus>
-  </div>
-  <div class="form-label-group mb-2">
-    <label for="inputName">Name</label>
-    <input type="text" name="name" class="form-control" placeholder="Name" value="{{user.name}}" required autofocus>
-  </div>
-  <div class="form-label-group mb-2">
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" class="form-control" placeholder="Password" required>
-  </div>
-  <div class="form-label-group mb-2">
-    <label for="inputcheckPassword">Confirm Password</label>
-    <input type="password" name="checkPassword" class="form-control" placeholder="Confirm Password" required>
-  </div>
-  <br />
-  <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
-  <div class="text-center mb-4">
-    <p><a href="/signin">Have an account? Sign In</a></p>
-  </div>
-</form>
+<div class="d-flex flex-column align-items-center border-right border-left border-bottom rounded-bottom p-4"
+  style="width: 576px;">
+  <form class="form-signin d-flex flex-column" action="/admin/setting/:id" method="POST" style="width: 450px;">
+    <div class="text-left mb-5">
+      <h5 class="mb-3 font-weight-bold">Setting</h5>
+    </div>
+
+    <div class="form-label-group mb-2 md-form">
+      <label for="inputAccount">帳號</label>
+      <input type="text" id="inputAccount" name="account" class="form-control" value="{{user.account}}" required
+        autofocus>
+    </div>
+
+    <div class="form-label-group mb-2 md-form">
+      <label for="inputName">名稱</label>
+      <input type="text" id="inputName" name="name" class="form-control" value="{{user.name}}" required>
+    </div>
+
+    <div class="form-label-group mb-2 md-form">
+      <label for="inputEmail">Email</label>
+      <input type="text" id="inputEmail" name="email" class="form-control" value="{{user.email}}" required>
+    </div>
+
+    <div class="form-label-group mb-2 md-form">
+      <label for="inputPassword">密碼</label>
+      <input type="text" id="inputPassword" name="password" class="form-control" required>
+    </div>
+
+    <div class="form-label-group mb-4 md-form">
+      <label for="inputcheckPassword">確認密碼</label>
+      <input type="text" id="inputcheckPassword" name="checkPassword" class="form-control" required>
+    </div>
+
+    <button class="btn mb-4 p-0 align-self-center" type="submit" style="
+        justify-content: center;
+        align-items: center;
+        width: 130px;
+        height: 40px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 800;
+        border: 1px solid #1DA1F2;
+        color: #1DA1F2;
+        background-color: #f7f9fa;
+        text-transform: none;">
+      Submit
+    </button>
+
+    <div class="text-center mb-4" style="font-size: 15px; color: #1b95e0;">
+      <p><a href="/admin/tweets">Cancel</a></p>
+    </div>
+  </form>
+</div>
