@@ -77,7 +77,7 @@ module.exports = {
     return queryInterface.bulkInsert('Replies',
       Array.from({ length: 150 }).map((_, d) => ({
         UserId: (Math.floor(Math.random() * 5) * 10) + 5,
-        TweetId: (d % 50) + 1,
+        TweetId: ((d % 50) * 10) + 5,
         comment: faker.lorem.sentences(),
         createdAt: new Date(),
         updatedAt: new Date()
